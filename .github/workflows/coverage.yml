@@ -1,13 +1,13 @@
 name: 'coverage'
 on: push
-jobs:
-    coverage:
-        runs-on: ubuntu-latest
-        env:
-            CI_JOB_NUMBER: 1
-        steps:
-            - uses: actions/checkout@v1
-            - uses: artiomtr/jest-coverage-report-action@v1.3
-              with:
-                  DB_URL: ${{ secrets.DB_URL }} 
-                  working_directory: ./server
+jobs: 
+  tests:
+    name: "coverage"
+    runs-on: ubuntu-latest
+    steps:
+        - uses: mattallty/jest-github-action@v1
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            DB_URL: ${{ DB_URL }}
+          with:
+            working-directory: "./server"
