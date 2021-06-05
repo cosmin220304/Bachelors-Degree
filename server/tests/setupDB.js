@@ -1,8 +1,9 @@
+/* istanbul ignore file */
 //code taken from here https://zellwk.com/blog/jest-and-mongoose/
 //used for setting up unit tests with mongoose
 
-const mongoose = require('mongoose')
-mongoose.set('useCreateIndex', true)
+const mongoose = require("mongoose")
+mongoose.set("useCreateIndex", true)
 mongoose.promise = global.Promise
 
 module.exports = {
@@ -33,8 +34,8 @@ module.exports = {
         try {
           await collection.drop()
         } catch (error) {
-          if (error.message === 'ns not found') return
-          if (error.message.includes('a background operation is currently running')) return
+          if (error.message === "ns not found") return
+          if (error.message.includes("a background operation is currently running")) return
           console.log(error.message)
         }
       }
