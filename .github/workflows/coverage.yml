@@ -1,9 +1,21 @@
 name: 'coverage'
 on: push
 jobs:
-  tests:
-    name: "coverage"
+  coverage:
     runs-on: ubuntu-latest
+    
     steps:
-      - uses: actions/checkout@v1
-      - run: npm test
+    - uses: actions/checkout@main
+    
+    - name: Use Node.js 14
+      uses: actions/setup-node@v1
+      with:
+        node-version: '14.x'
+    
+    - name: npm install and test
+      run: |
+        npm install
+        CI='' npm test
+      working-directory: ./server
+      env: 
+        DB_URL: ${{ secrets.DB_URL }} 
