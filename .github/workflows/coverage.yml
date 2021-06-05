@@ -18,4 +18,4 @@ jobs:
         CI='' npm test
       working-directory: ./server
       env: 
-        DB_URL: ${{ secrets.DB_URL }} 
+        TEST_DB_URL: ${{ secrets.TEST_DB_URL }} 
