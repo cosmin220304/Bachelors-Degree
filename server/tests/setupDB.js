@@ -5,6 +5,7 @@
 const mongoose = require("mongoose")
 mongoose.set("useCreateIndex", true)
 mongoose.promise = global.Promise
+require('dotenv').config();
 
 module.exports = {
   setupDB() {
