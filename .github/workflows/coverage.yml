@@ -1,8 +1,5 @@
 name: 'coverage'
-on:
-  push:
-    paths:
-    - './server/**'
+on: push
 jobs:
     coverage:
         runs-on: ubuntu-latest
