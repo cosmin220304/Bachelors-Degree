@@ -8,6 +8,5 @@ jobs:
         - uses: mattallty/jest-github-action@v1
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            DB_URL: ${{ secrets.DB_URL }}
           with:
             working-directory: "./server"
