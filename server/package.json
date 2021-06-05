@@ -10,7 +10,7 @@
   "scripts": {
     "start": "node index.js",
     "test": "jest --silent",
-    "test-coverage": "npx jest --coverage",
+    "test-coverage": "npx jest --coverage --silent > README.md",
     "javascript": "node services/javascript/index.js",
     "python": "node services/python/index.js",
     "cpp": "node services/cpp/index.js",
