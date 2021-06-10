@@ -1,0 +1,27 @@
+{
+  "short_name": "PktIDE",
+  "name": "PocketIDE",
+  "icons": [
+    {
+      "src": "placeholder.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "placeholder.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "start_url": "./index.html",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

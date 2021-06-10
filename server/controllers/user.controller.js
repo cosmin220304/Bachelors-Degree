@@ -65,12 +65,11 @@ module.exports.updateUserById = async (req, res) => {
 
 module.exports.createUser = async (req, res) => {
   try {
-    console.log({ ...req.body })
     const found = await db.user.findOne({ ...req.body })
     if (found) return res.status(409).json({ error: "user already exists!" })
 
     const user = await db.user.create({ ...req.body })
-    res.status(201).json({user})
+    res.status(201).json({ user })
 
   } catch (error) {
     console.log(error)
