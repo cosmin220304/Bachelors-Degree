@@ -6,11 +6,13 @@ import Topnav from './components/Topnav'
 export default class App extends Component {
   render() {
     return (
-      <>
+      <Router>
         <Topnav />
-        {/* <Route exact path='/' component={Home} /> */}
-        {/* <Route path='/project' component={ProjectScreen} /> */}
-      </>
+        <Switch>
+          {/* <Route exact path='/' component={Home} /> */}
+          {/* <Route path='/project' component={ProjectScreen} /> */}
+        </Switch>
+      </Router>
     );
   }
 }
