@@ -2,13 +2,15 @@ const fs = require("fs")
 const express = require("express")
 const { v4: uuidv4 } = require("uuid")
 const { azureFormRecognize } = require("./services/azureFormRecognize")
-const { saveImageAndGetUrl } = require('./services/imageBB')
+const { googleCloudVision } = require("./services/googleCloudVision")
+const { saveImageAndGetUrlFromImageBB } = require("./services/imageBB")
+const { ocrSpace } = require("./services/ocrSpace")
 const port = process.env.PORT || 8080
-require('dotenv').config()
+require("dotenv").config()
 
 //Image redirect for azure
 const herokuUrl = "todo"
-const enviroment = process.env.NODE_ENV || require('./secret.js').NODE_ENV
+const enviroment = process.env.NODE_ENV || require("./secret.js").NODE_ENV
 const apiUrl = enviroment === "production" ? herokuUrl : `http://localhost:${port}`
 
 const app = express()
@@ -28,6 +30,7 @@ const asyncWriteFile = (fileName, base64Image) => {
 app.post("/", async (req, res) => {
   const uuid = uuidv4()
   const fileName = `${uuid}.jpg`
+  const imgPath = `${__dirname}/${uuid}.jpg`
   try {
     const base64Image = req.body.base64Image.split("base64,")[1]
 
@@ -37,19 +40,26 @@ app.post("/", async (req, res) => {
     //Image to url
     let url = `${apiUrl}/${uuid}`
     if (enviroment === "development") {
-      url = await saveImageAndGetUrl(base64Image)
+      url = await saveImageAndGetUrlFromImageBB(base64Image)
     }
 
     //Send image to apis
-    const text = await azureFormRecognize(url)
-    res.send({ text: text })
+    const ocr_space_text = ocrSpace(req.body.base64Image)
+    const azure_text = azureFormRecognize(url)
+    const google_text = googleCloudVision(base64Image)
+
+    const all_results = {
+      ocr_space_text: await ocr_space_text,
+      azure_text: await azure_text,
+      google_text: await google_text,
+    }
+    res.send({ ...all_results })
 
   } catch (err) {
-    console.log("textReco => ", err)
+    console.log("textReco => ", err.response ? JSON.stringify(err.response.data) : err)
     res.sendStatus(500)
   } finally {
     // Remove image
-    const imgPath = `${__dirname}/${uuid}.jpg`
     fs.unlink(imgPath, (err) => console.log("textReco => ", err))
   }
 })
