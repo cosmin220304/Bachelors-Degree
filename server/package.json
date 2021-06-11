@@ -11,9 +11,10 @@
     "start": "node index.js",
     "test": "jest ",
     "test-coverage": "npx jest --coverage --silent > README.md",
+    "textReco": "node services/textReco/index.js",
     "javascript": "node services/javascript/index.js",
     "python": "node services/python/index.js",
     "cpp": "node services/cpp/index.js",
-    "start-all": "npm-run-all --parallel start python javascript cpp & wait"
+    "start-all": "npm-run-all --parallel start textReco javascript python cpp & wait"
   }
 }

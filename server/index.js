@@ -7,6 +7,7 @@ const port = process.env.PORT || 8080
 require('dotenv').config()
 
 const serviceMap = {
+  "textReco": "http://localhost:8080/",
   "javascript": "http://localhost:8081/",
   "python": "http://localhost:8082/",
   "cpp": "http://localhost:8083/",
@@ -27,8 +28,11 @@ mongoose
     app.use(express.urlencoded({ extended: true }));
 
     app.use("/ping", async (req, res) => res.send("Server is Up"))
+
+    //User api
     app.use("/api", router)
 
+    //Api gateway
     app.use("/code", async (req, res) => {
       try {
         const language = req.body.language
