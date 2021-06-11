@@ -33,7 +33,7 @@ app.post("/", (req, res) => {
 
   } catch (err) {
     console.log("CPP => ", err)
-    res.status(500)
+    res.sendStatus(500)
   }
 })
 

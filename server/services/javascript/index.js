@@ -26,7 +26,7 @@ app.post("/", (req, res) => {
 
   } catch (err) {
     console.log("JS => ", err)
-    res.status(500)
+    res.sendStatus(500)
   }
 })
 

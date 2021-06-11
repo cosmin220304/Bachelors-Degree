@@ -17,7 +17,7 @@ app.post("/", (req, res) => {
 
     fs.writeFile(fileName, data, (err) => {
       if (err) return res.status(500).send(err)
-      
+
       exec(`python ${fileName}`, options, (error, stdout, stderr) => {
         res.json({ stdout, stderr, error })
         fs.unlinkSync(fileName)
@@ -26,7 +26,7 @@ app.post("/", (req, res) => {
 
   } catch (err) {
     console.log("PYTHON => ", err)
-    res.status(500)
+    res.sendStatus(500)
   }
 })
 

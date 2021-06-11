@@ -23,6 +23,7 @@ function Project() {
       <div className='bg-black md:w-6/12 m-auto'>
 
         <Webcam
+          screenshotFormat="image/jpeg"
           audio={false}
           videoConstraints={videoConstraints}
           ref={webcamRef}
