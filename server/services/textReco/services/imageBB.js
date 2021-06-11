@@ -1,12 +1,15 @@
 var FormData = require("form-data")
 const axios = require("axios")
+require('dotenv').config()
+
+const imageBB_key = process.env.IMAGEBB_key || require('./secret.js').IMAGEBB_key
 
 module.exports.saveImageAndGetUrl = async (base64Image) => {
   const data = new FormData()
   data.append("image", base64Image)
   let config = {
     method: "post",
-    url: "https://api.imgbb.com/1/upload?key=241bf1e868ee22d45fb48e1560520fa6",
+    url: `https://api.imgbb.com/1/upload?key=${imageBB_key}`,
     headers: {
       ...data.getHeaders()
     },
@@ -15,6 +18,5 @@ module.exports.saveImageAndGetUrl = async (base64Image) => {
 
   const { data: response } = await axios(config)
 
-  console.log(response.data)
   return response.data.url
 }
