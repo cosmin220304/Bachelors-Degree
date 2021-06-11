@@ -11,4 +11,4 @@ html, body, #root {
 a, .no-decoration, a:hover, .no-decoration:hover {
   text-decoration: none;
   color: inherit;
-}  
+}
