@@ -1,56 +1,68 @@
 const fs = require("fs")
 const express = require("express")
-var FormData = require("form-data")
 const { v4: uuidv4 } = require("uuid")
-const axios = require("axios")
 const { azureFormRecognize } = require("./services/azureFormRecognize")
+const { saveImageAndGetUrl } = require('./services/imageBB')
 const port = process.env.PORT || 8080
+require('dotenv').config()
+
+//Image redirect for azure
+const herokuUrl = "todo"
+const enviroment = process.env.NODE_ENV || require('./secret.js').NODE_ENV
+const apiUrl = enviroment === "production" ? herokuUrl : `http://localhost:${port}`
 
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use("/ping", (req, res) => res.send("textReco is up!"))
 
-const saveImageAndGetUrl = async (base64Image) => {
-  const data = new FormData()
-  data.append("image", base64Image)
-  let config = {
-    method: "post",
-    url: "https://api.imgbb.com/1/upload?key=241bf1e868ee22d45fb48e1560520fa6",
-    headers: {
-      ...data.getHeaders()
-    },
-    data: data
-  }
-
-  const { data: response } = await axios(config)
-  return response.data.url
+const asyncWriteFile = (fileName, base64Image) => {
+  return new Promise((res, rej) => {
+    fs.writeFile(fileName, base64Image, "base64", (err) => {
+      if (err) rej(err)
+      else res()
+    })
+  })
 }
 
 app.post("/", async (req, res) => {
+  const uuid = uuidv4()
+  const fileName = `${uuid}.jpg`
   try {
-    // //TODO REPLACE IMGBB
-    // fs.writeFile(`${uuidv4()}.jpg`, base64Image, "base64", (err) => {
-    //   console.log(err)
-    // })
-
     const base64Image = req.body.base64Image.split("base64,")[1]
-    const url = await saveImageAndGetUrl(base64Image)
 
+    //Save image on server
+    await asyncWriteFile(fileName, base64Image)
+
+    //Image to url
+    let url = `${apiUrl}/${uuid}`
+    if (enviroment === "development") {
+      url = await saveImageAndGetUrl(base64Image)
+    }
+
+    //Send image to apis
     const text = await azureFormRecognize(url)
     res.send({ text: text })
 
   } catch (err) {
     console.log("textReco => ", err)
     res.sendStatus(500)
+  } finally {
+    // Remove image
+    const imgPath = `${__dirname}/${uuid}.jpg`
+    fs.unlink(imgPath, (err) => console.log("textReco => ", err))
   }
 })
 
+
 app.get("/:id", (req, res) => {
   try {
-
+    const id = req.params.id
+    const image = `${__dirname}/${id}.jpg`
+    res.sendFile(image)
   } catch (err) {
-
+    console.log("textReco => ", err)
+    res.sendStatus(500)
   }
 })
 
