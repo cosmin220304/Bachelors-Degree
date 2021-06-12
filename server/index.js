@@ -3,14 +3,16 @@ const router = require("./routes")
 const path = require("path")
 const mongoose = require("mongoose")
 const axios = require("axios")
-const port = process.env.PORT || 8080
-require('dotenv').config()
+const port = process.env.PORT || 8000
+require("dotenv").config()
 
+const enviroment = process.env.NODE_ENV || require("./secret.js").NODE_ENV
 const serviceMap = {
   "textReco": "http://localhost:8080/",
   "javascript": "http://localhost:8081/",
-  "python": "http://localhost:8082/",
-  "cpp": "http://localhost:8083/",
+  "python": enviroment === "development" ? "http://localhost:8082/" : "https://cosmin-afta-python.herokuapp.com/",
+  "c": enviroment === "development" ? "http://localhost:8083/" : "https://cosmin-afta-c.herokuapp.com/",
+  "cpp": enviroment === "development" ? "http://localhost:8084/" : "https://cosmin-afta-cpp.herokuapp.com/",
 }
 
 let mongo_uri = process.env.DB_URL
@@ -23,7 +25,7 @@ mongoose
   .connect(mongo_uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     const app = express()
-    app.use(express.static(path.join(__dirname, 'build')))
+    app.use(express.static(path.join(__dirname, "build")))
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
 
@@ -39,7 +41,7 @@ mongoose
         const code = req.body.code
         console.log(req.body)
 
-        const { data } = axios({
+        const { data } = await axios({
           method: req.method,
           url: serviceMap[language],
           data: { code }
