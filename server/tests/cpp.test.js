@@ -25,6 +25,30 @@ describe("cpp microservice tests", () => {
     expect(data).toHaveProperty("error", null)
   })
 
+  it("no jwt should return error", async () => {
+    var body = JSON.stringify({
+      "code": "#include <iostream> \r\n int main() { \r\n std::cout << \"Hello World!\"; \r\n return 0;}"
+    });
+
+    var config = {
+      method: "post",
+      url: url,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${JWT}`
+      },
+      data: body
+    };
+
+    let error = null
+    try {
+      await axios(config)
+    } catch (err) {
+      error = err
+    }
+    expect(error).not.toBeNull()
+  })
+
   it("c hello world program should return accordingly", async () => {
     var body = JSON.stringify({
       "code": "#include <stdio.h> \r\n int main() { \r\n printf(\"Hello World!\"); \r\n return 0;}"
