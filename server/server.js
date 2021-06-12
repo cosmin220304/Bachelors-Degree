@@ -13,6 +13,8 @@ let serviceMap = {
   "python": "http://localhost:8082/",
   "c": "http://localhost:8083/",
   "cpp": "http://localhost:8084/",
+  "java": "http://localhost:8085/",
+  "php": "http://localhost:8086/",
 }
 if (enviroment === "development") {
   serviceMap = {
@@ -21,6 +23,8 @@ if (enviroment === "development") {
     "python": "https://cosmin-afta-python.herokuapp.com/",
     "c": "https://cosmin-afta-c.herokuapp.com/",
     "cpp": "https://cosmin-afta-cpp.herokuapp.com/",
+    "java": "https://cosmin-afta-java.herokuapp.com/",
+    "php": "https://cosmin-afta-php.herokuapp.com/",
   }
 }
 
