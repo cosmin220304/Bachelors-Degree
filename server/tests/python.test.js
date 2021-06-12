@@ -34,8 +34,7 @@ describe("python microservice tests", () => {
       method: "post",
       url: url,
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${JWT}`
+        "Content-Type": "application/json"
       },
       data: body
     };
@@ -58,7 +57,8 @@ describe("python microservice tests", () => {
       method: "post",
       url: url,
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${JWT}`
       },
       data: body
     };
