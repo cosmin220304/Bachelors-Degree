@@ -3,7 +3,7 @@ const url = "https://cosmin-afta-cpp.herokuapp.com/"
 require("dotenv").config()
 const JWT = process.env.JWT || require("./secret.js").JWT
 
-describe("cpp microservice tests", () => {
+describe.skip("cpp microservice tests", () => {
   it("c++ hello world program should return accordingly", async () => {
     var body = JSON.stringify({
       "code": "#include <iostream> \r\n int main() { \r\n std::cout << \"Hello World!\"; \r\n return 0;}"

@@ -3,7 +3,7 @@ const url = "https://cosmin-afta-python.herokuapp.com/"
 require("dotenv").config()
 const JWT = process.env.JWT || require("./secret.js").JWT
 
-describe("python microservice tests", () => {
+describe.skip("python microservice tests", () => {
   it("python hello world program should return accordingly", async () => {
     var body = JSON.stringify({
       "code": "print(\"Hello World!\")"

@@ -3,7 +3,7 @@ const url = "https://cosmin-afta-c.herokuapp.com/"
 require("dotenv").config()
 const JWT = process.env.JWT || require("./secret.js").JWT
 
-describe("C microservice tests", () => {
+describe.skip("C microservice tests", () => {
   it("c hello world program should return accordingly", async () => {
     var body = JSON.stringify({
       "code": "#include <stdio.h> \r\n int main() { \r\n printf(\"Hello World!\"); \r\n return 0;}"
