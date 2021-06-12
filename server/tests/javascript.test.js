@@ -1,10 +1,10 @@
 const axios = require("axios")
-const url = "https://cosmin-afta-python.herokuapp.com/"
+const url = "https://cosmin-afta-javascript.herokuapp.com/"
 
-describe("python microservice tests", () => {
-  it("python hello world program should return accordingly", async () => {
+describe("javascript microservice tests", () => {
+  it("javascript hello world program should return accordingly", async () => {
     var body = JSON.stringify({
-      "code": "print(\"Hello World!\")"
+      "code": "console.log(\"Hello World!\")"
     });
 
     var config = {

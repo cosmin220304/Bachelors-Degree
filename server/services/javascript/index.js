@@ -8,7 +8,7 @@ const options = { timeout: 600000, stdio: "inherit", shell: true, }
 const app = express()
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/ping", (req, res) => res.send("JS is up!"))
+app.use("/ping", (req, res) => res.send("JAVASCRIPT is up!"))
 
 app.post("/", (req, res) => {
   try {
@@ -25,11 +25,11 @@ app.post("/", (req, res) => {
     })
 
   } catch (err) {
-    console.log("JS => ", err)
+    console.log("JAVASCRIPT => ", err)
     res.sendStatus(500)
   }
 })
 
 app.listen(port, () => {
-  console.log(`JS microservice listening on ${port}`)
+  console.log(`JAVASCRIPT microservice listening on ${port}`)
 })

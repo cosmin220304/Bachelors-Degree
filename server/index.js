@@ -7,12 +7,21 @@ const port = process.env.PORT || 8000
 require("dotenv").config()
 
 const enviroment = process.env.NODE_ENV || require("./secret.js").NODE_ENV
-const serviceMap = {
+let serviceMap = {
   "textReco": "http://localhost:8080/",
   "javascript": "http://localhost:8081/",
-  "python": enviroment === "development" ? "http://localhost:8082/" : "https://cosmin-afta-python.herokuapp.com/",
-  "c": enviroment === "development" ? "http://localhost:8083/" : "https://cosmin-afta-c.herokuapp.com/",
-  "cpp": enviroment === "development" ? "http://localhost:8084/" : "https://cosmin-afta-cpp.herokuapp.com/",
+  "python": "http://localhost:8082/",
+  "c": "http://localhost:8083/",
+  "cpp": "http://localhost:8084/",
+}
+if (enviroment === "development") {
+  serviceMap = {
+    "textReco": "http://localhost:8080/",
+    "javascript": "https://cosmin-afta-javascript.herokuapp.com/",
+    "python": "https://cosmin-afta-python.herokuapp.com/",
+    "c": "https://cosmin-afta-c.herokuapp.com/",
+    "cpp": "https://cosmin-afta-cpp.herokuapp.com/",
+  }
 }
 
 let mongo_uri = process.env.DB_URL
