@@ -8,14 +8,15 @@
     "path": "^0.12.7"
   },
   "scripts": {
-    "start": "node index.js",
     "test": "jest ",
     "test-coverage": "npx jest --coverage --silent > README.md",
+    "start": "node server.js",
+    "codeFinder": "node services/codeFinder/index.js",
     "textReco": "node services/textReco/index.js",
     "javascript": "node services/javascript/index.js",
     "python": "node services/python/index.js",
     "c": "node services/c/index.js",
     "cpp": "node services/cpp/index.js",
-    "start-all": "npm-run-all --parallel start textReco javascript python c cpp & wait"
+    "start-all": "npm-run-all --parallel start codeFinder textReco javascript python c cpp & wait"
   }
 }
