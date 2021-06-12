@@ -20,3 +20,4 @@ jobs:
       working-directory: ./server
       env: 
         TEST_DB_URL: ${{ secrets.TEST_DB_URL }} 
+        JWT: ${{ secrets.JWT }}
