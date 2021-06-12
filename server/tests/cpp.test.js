@@ -1,5 +1,7 @@
 const axios = require("axios")
 const url = "https://cosmin-afta-cpp.herokuapp.com/"
+require("dotenv").config()
+const JWT = process.env.JWT || require("./secret.js").JWT
 
 describe("cpp microservice tests", () => {
   it("c++ hello world program should return accordingly", async () => {
@@ -11,7 +13,8 @@ describe("cpp microservice tests", () => {
       method: "post",
       url: url,
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${JWT}`
       },
       data: body
     };

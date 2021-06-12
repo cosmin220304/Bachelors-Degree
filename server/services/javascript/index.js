@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken")
 const express = require("express")
 const fs = require("fs")
 const { exec } = require("child_process")
@@ -10,7 +11,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/ping", (req, res) => res.send("JAVASCRIPT is up!"))
 
-app.post("/", (req, res) => {
+const middleWare = (req, res, next) => {
+  try {
+    const token = req.headers.authorization && req.headers.authorization.split(" ")[1]
+    if (!token) return res.status(401).json({ message: "Missing token" })
+
+    const claims = jwt.decode(token, process.env.SECRET)
+    req.user = claims
+    next()
+
+  } catch (error) {
+    console.log(error.response ? error.response.data : error)
+    res.sendStatus(500)
+  }
+}
+
+app.post("/", middleWare, (req, res) => {
   try {
     const data = req.body.code
     const fileName = `${uuidv4()}.js`
