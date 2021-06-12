@@ -20,6 +20,7 @@
     "java": "node services/java/index.js",
     "php": "node services/php/index.js",
     "haskell": "node services/haskell/index.js",
-    "start-all": "npm-run-all --parallel start codeFinder textReco javascript python c cpp java php haskell & wait"
+    "scala": "node services/scala/index.js",
+    "start-all": "npm-run-all --parallel start codeFinder textReco javascript python c cpp java php haskell scala & wait"
   }
 }

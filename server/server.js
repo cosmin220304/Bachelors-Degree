@@ -16,6 +16,7 @@ let serviceMap = {
   "java": "http://localhost:8085/",
   "php": "http://localhost:8086/",
   "haskell": "http://localhost:8087/",
+  "scala": "http://localhost:8088/",
 }
 if (enviroment === "development") {
   serviceMap = {
@@ -27,6 +28,7 @@ if (enviroment === "development") {
     "java": "https://cosmin-afta-java.herokuapp.com/",
     "php": "https://cosmin-afta-php.herokuapp.com/",
     "haskell": "https://cosmin-afta-haskell.herokuapp.com/",
+    "scala": "https://cosmin-afta-scala.herokuapp.com/",
   }
 }
 
