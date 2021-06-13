@@ -40,8 +40,8 @@ module.exports.azureFormRecognize = async (url) => {
     return formRecoGetResponse.data.analyzeResult.readResults[0].lines.map(l => l.text)
 
   } catch (err) {
-    console.log("textReco -> azure => ", err.response.data)
-    return null
+    console.log("textReco -> azure => ", err)
+    return []
   }
 }
 

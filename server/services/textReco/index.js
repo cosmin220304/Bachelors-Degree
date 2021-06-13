@@ -8,10 +8,8 @@ const { ocrSpace } = require("./services/ocrSpace")
 const port = process.env.PORT || 8080
 require("dotenv").config()
 
-//Image redirect for azure
-const herokuUrl = "todo"
 const enviroment = process.env.NODE_ENV || require("./secret.js").NODE_ENV
-const apiUrl = enviroment === "production" ? herokuUrl : `http://localhost:${port}`
+const apiUrl = enviroment === "development" ? `http://localhost:${port}` : "https://cosmin-afta-text-reco.herokuapp.com"
 
 const app = express()
 app.use(express.json())

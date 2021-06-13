@@ -25,7 +25,7 @@ module.exports.googleCloudVision = async (base64Image) => {
     return data.responses[0].fullTextAnnotation.text.split("\n")
 
   } catch (err) {
-    console.log("textReco -> google => ", err.response.data)
-    return null
+    console.log("textReco -> google => ", err)
+    return []
   }
 }

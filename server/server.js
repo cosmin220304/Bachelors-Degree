@@ -8,6 +8,7 @@ require("dotenv").config()
 
 const enviroment = process.env.NODE_ENV || require("./secret.js").NODE_ENV
 let serviceMap = {
+  "codeFinder": "http://localhost:8079/",
   "textReco": "http://localhost:8080/",
   "javascript": "http://localhost:8081/",
   "python": "http://localhost:8082/",
@@ -18,9 +19,10 @@ let serviceMap = {
   "haskell": "http://localhost:8087/",
   "scala": "http://localhost:8088/",
 }
-if (enviroment === "development") {
+if (enviroment === "production") {
   serviceMap = {
-    "textReco": "http://localhost:8080/",
+    "codeFinder": "http://localhost:8079/",
+    "textReco": "https://cosmin-afta-text-reco.herokuapp.com/",
     "javascript": "https://cosmin-afta-javascript.herokuapp.com/",
     "python": "https://cosmin-afta-python.herokuapp.com/",
     "c": "https://cosmin-afta-c.herokuapp.com/",

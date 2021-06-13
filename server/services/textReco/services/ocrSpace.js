@@ -22,7 +22,7 @@ module.exports.ocrSpace = async (base64Image) => {
     return data.ParsedResults[0].ParsedText.split("\r\n")
 
   } catch (err) {
-    console.log("textReco -> ocr space => ", err.response.data)
-    return null
+    console.log("textReco -> ocr space => ", err)
+    return []
   }
 }
