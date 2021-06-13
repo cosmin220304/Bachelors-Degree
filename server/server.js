@@ -3,6 +3,7 @@ const router = require("./routes")
 const path = require("path")
 const mongoose = require("mongoose")
 const axios = require("axios")
+const { middleWare } = require("./utils/middleWare")
 const port = process.env.PORT || 8000
 require("dotenv").config()
 
@@ -33,15 +34,11 @@ if (enviroment === "development") {
     "scala": "http://localhost:8088/",
   }
 }
+const acceptedLangauges = ["javascript", "python", "c", "cpp", "java", "php", "haskell", "scala"]
 
-let mongo_uri = process.env.DB_URL
-if (!mongo_uri) {
-  const { DB_URL } = require("./secret.js")
-  mongo_uri = DB_URL
-}
-
+const db_url = process.env.DB_URL || require("./secret.js").DB_URL
 mongoose
-  .connect(mongo_uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(db_url, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     const app = express()
     app.use(express.static(path.join(__dirname, "build")))
@@ -54,18 +51,53 @@ mongoose
     app.use("/api", router)
 
     //Api gateway
-    app.use("/code", async (req, res) => {
+    app.use("/recognize", middleWare, async (req, res) => {
+      try {
+        const language = req.body.language
+        const base64Image = req.body.base64Image
+
+        if (!language) return res.status(400).json({ "message": "Field language is required!" })
+        if (!acceptedLangauges.includes(language)) return res.status(400).json({ "message": "Language not supported!" })
+        if (!base64Image) return res.status(400).json({ "message": "Field base64Image is required!" })
+
+        const { data } = await axios({
+          method: "post",
+          url: serviceMap["codeFinder"],
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": req.token
+          },
+          data: JSON.stringify({ base64Image, language })
+        })
+
+        res.json({ ...data })
+
+      } catch (err) {
+        console.log(err)
+        res.sendStatus(500)
+      }
+    })
+
+    //Api gateway
+    app.use("/compile", middleWare, async (req, res) => {
       try {
         const language = req.body.language
         const code = req.body.code
 
-        const { data } = await axios({
-          method: req.method,
-          url: serviceMap[language],
-          data: { code }
-        })
+        if (!language) return res.status(400).json({ "message": "Field language is required!" })
+        if (!acceptedLangauges.includes(language)) return res.status(400).json({ "message": "Language not supported!" })
+        if (!code) return res.status(400).json({ "message": "Field code is required!" })
 
-        res.json(data)
+        const { data } = await axios({
+          method: "post",
+          url: serviceMap[language],
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": req.token
+          },
+          data: JSON.stringify({ code })
+        })
+        res.json({ ...data })
 
       } catch (err) {
         console.log(err)

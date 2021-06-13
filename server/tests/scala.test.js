@@ -7,11 +7,11 @@ describe.skip("scala microservice tests", () => {
   jest.setTimeout(20000)
 
   it("scala hello world program should return accordingly", async () => {
-    var body = JSON.stringify({
+    const body = JSON.stringify({
       "code": "object Hello { def main(args: Array[String]) = { println(\"Hello World!\")}}"
     });
 
-    var config = {
+    const config = {
       method: "post",
       url: url,
       headers: {
@@ -28,11 +28,11 @@ describe.skip("scala microservice tests", () => {
   })
 
   it("no jwt should return error", async () => {
-    var body = JSON.stringify({
+    const body = JSON.stringify({
       "code": "print(\"Hello World!\")"
     });
 
-    var config = {
+    const config = {
       method: "post",
       url: url,
       headers: {
@@ -51,11 +51,11 @@ describe.skip("scala microservice tests", () => {
   })
 
   it("c hello world program should return error", async () => {
-    var body = JSON.stringify({
+    const body = JSON.stringify({
       "code": "#include <stdio.h> \r\n int main() { \r\n printf(\"Hello World!\"); \r\n return 0;}"
     });
 
-    var config = {
+    const config = {
       method: "post",
       url: url,
       headers: {

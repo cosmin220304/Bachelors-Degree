@@ -5,11 +5,11 @@ const JWT = process.env.JWT || require("./secret.js").JWT
 
 describe.skip("javascript microservice tests", () => {
   it("javascript hello world program should return accordingly", async () => {
-    var body = JSON.stringify({
+    const body = JSON.stringify({
       "code": "console.log(\"Hello World!\")"
     });
 
-    var config = {
+    const config = {
       method: "post",
       url: url,
       headers: {
@@ -26,11 +26,11 @@ describe.skip("javascript microservice tests", () => {
   })
 
   it("no jwt should return error", async () => {
-    var body = JSON.stringify({
+    const body = JSON.stringify({
       "code": "console.log(\"Hello World!\")"
     });
 
-    var config = {
+    const config = {
       method: "post",
       url: url,
       headers: {
@@ -49,11 +49,11 @@ describe.skip("javascript microservice tests", () => {
   })
 
   it("c hello world program should return error", async () => {
-    var body = JSON.stringify({
+    const body = JSON.stringify({
       "code": "#include <stdio.h> \r\n int main() { \r\n printf(\"Hello World!\"); \r\n return 0;}"
     });
 
-    var config = {
+    const config = {
       method: "post",
       url: url,
       headers: {
