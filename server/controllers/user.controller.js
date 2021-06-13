@@ -1,6 +1,5 @@
 const db = require("../models");
 const mongoose = require("mongoose")
-const ObjectId = mongoose.Types.ObjectId;
 
 module.exports.getUsers = async (req, res) => {
   try {
@@ -28,9 +27,8 @@ module.exports.getUsers = async (req, res) => {
 module.exports.getUserById = async (req, res) => {
   try {
     const id = req.params.id
-    if (!ObjectId.isValid(id)) return res.status(404).json({ error: "invalid mongodb id" })
 
-    const user = await db.user.findOne({ _id: id })
+    const user = await db.user.findOne({ uid: id })
     if (!user || user.length == 0) return res.status(404).json({ error: "user not found" })
 
     res.json(user[0])
@@ -44,15 +42,14 @@ module.exports.getUserById = async (req, res) => {
 module.exports.updateUserById = async (req, res) => {
   try {
     const id = req.params.id
-    if (!ObjectId.isValid(id)) return res.status(404).json({ error: "invalid mongodb id" })
 
-    const found = await db.user.findOne({ _id: id })
+    const found = await db.user.findOne({ uid: id })
     if (!found) return res.status(404).json({ error: "user not found" })
 
     if (!req.body || req.body === {}) return res.status(204).json({ message: "nothing was updated" })
 
     await db.user.updateOne(
-      { _id: id },
+      { uid: id },
       { $set: req.body }
     )
     res.sendStatus(200)
@@ -80,12 +77,11 @@ module.exports.createUser = async (req, res) => {
 module.exports.removeUserById = async (req, res) => {
   try {
     const id = req.params.id
-    if (!ObjectId.isValid(id)) return res.status(404).json({ error: "user not found" })
 
-    const found = await db.user.findOne({ _id: id })
+    const found = await db.user.findOne({ uid: id })
     if (!found) return res.status(404).json({ error: "user not found" })
 
-    await db.user.deleteOne({ _id: id })
+    await db.user.deleteOne({ uid: id })
     res.sendStatus(204)
 
   } catch (error) {

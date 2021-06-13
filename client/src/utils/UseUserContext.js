@@ -1,9 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useCookies } from "react-cookie"
 
 const UserContext = React.createContext()
 
 const UserContextWrapper = ({ children }) => {
-  const [user, setUser] = useState()
+  const [cookies, setCookie] = useCookies(["user"]);
+  const [user, setUser] = useState(cookies.user);
+
+  useEffect(() => {
+    setCookie("user", user);
+  }, [user]);
 
   return (
     <UserContext.Provider value={[user, setUser]}>

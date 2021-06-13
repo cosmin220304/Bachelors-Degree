@@ -20,7 +20,7 @@ function Project() {
 
   return (
     <div className='h-full bg-black'>
-      <div className='bg-black md:w-6/12 m-auto'>
+      <div className='bg-black md:w-6/12 md:flex m-auto'>
 
         <Webcam
           screenshotFormat="image/jpeg"

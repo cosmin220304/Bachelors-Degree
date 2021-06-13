@@ -1,7 +1,12 @@
 const { model, Schema } = require("mongoose");
 
 const user = new Schema({
-  username: {
+  uid: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  phoneNumber: {
     type: String,
     unique: true,
     required: true,
@@ -9,7 +14,10 @@ const user = new Schema({
   email: {
     type: String,
     unique: true,
-    required: true,
+  },
+  username: {
+    type: String,
+    unique: true,
   },
   // projects: [
   //   { type: Schema.Types.ObjectId, ref: 'projects' }
