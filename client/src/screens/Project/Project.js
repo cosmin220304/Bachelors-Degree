@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useHistory, useParams } from 'react-router-dom'
 import axios from 'axios'
 import DropDown from './components/DropDown'
+import Loader from '../../components/Loader/Loader'
 
 const videoConstraints = {
   width: 720,
@@ -18,11 +19,7 @@ function Project() {
   const [code, setCode] = useState()
   const [output, seOutput] = useState()
   const [language, setLanguage] = useState('javascript')
-
-  useEffect(() => {
-    if (!id || id === 'new') return
-    loadProjectData()
-  }, [id])
+  const [outputIsLoading, setOutputIsLoading] = useState(false)
 
   const loadProjectData = async () => {
     try {
@@ -35,23 +32,20 @@ function Project() {
     }
   }
 
+  useEffect(() => {
+    if (!id || id === 'new') return
+    loadProjectData()
+  }, [id])
+
   const takePhoto = useCallback(() => {
+    if (outputIsLoading) return
     const base64Image = webcamRef.current.getScreenshot()
-    recognizeCode(base64Image)
+    recognizeAndSetCode(base64Image)
   }, [webcamRef])
 
-  const recognizeCode = async (base64Image) => {
+  const recognizeAndSetCode = async (base64Image) => {
     try {
-      console.log("calling with data: ", {
-        headers: {
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.J17JYU9weVb9fVBqmhS5JZjEdzgjOAvz-21uuO7Eg4w',
-          'Content-Type': 'application/json'
-        },
-        data: {
-          'language': 'javascript',
-          'code': 'console.log(3)'
-        }
-      })
+      setOutputIsLoading(true)
       const headers = {
         'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.J17JYU9weVb9fVBqmhS5JZjEdzgjOAvz-21uuO7Eg4w',
         'Content-Type': 'application/json'
@@ -61,6 +55,7 @@ function Project() {
       await new Promise(r => setTimeout(r, 5 * 1000))
       const data = { code: "Console.log 13)\r\n" }
       setCode(data.code)
+      setOutputIsLoading(false)
     } catch {
       alert('request failed, try again in 2 minutes!')
     }
@@ -70,10 +65,10 @@ function Project() {
     <div className='h-full bg-black'>
       <div className='bg-black m-auto md:w-6/12 md:grid md:grid-cols-2 md:ml-16'>
 
+        <Loader isVisible={outputIsLoading} className='absolute inset-center z-10 text-white' />
         <DropDown className='absolute z-10' changeHandler={(e) => setLanguage(e.target.value)} />
-
-        <div className='absolute inset-center z-10 text-white'>
-          <FontAwesomeIcon icon='spinner' spin size='10x' />
+        <div className='absolute z-10 right-2 text-white'>
+          <FontAwesomeIcon icon='expand-arrows-alt' size='1x' />
         </div>
 
         <Webcam
@@ -85,7 +80,7 @@ function Project() {
         />
 
         {/* Buttons */}
-        <div className='grid grid-cols-3 text-center gap-2 m-2 md:mt-0 h-32'>
+        <div className='grid grid-cols-3 text-center gap-2 m-2 md:mt-0 md:h-32'>
           <div className='p-4 text-red-900 bg-red-500 rounded-lg self-start'>
             <FontAwesomeIcon icon='pen' size='4x' />
           </div>
@@ -100,7 +95,9 @@ function Project() {
         {/* Output */}
         <div className='p-4 pt-0'>
           <div className='relative flex'>
-            <div className='text-white flex-1'> Output: </div>
+            <div className='text-white flex-1'>
+              Output:
+            </div>
             <div className='text-white'>
               <FontAwesomeIcon icon='expand-arrows-alt' size='1x' />
             </div>
@@ -108,9 +105,9 @@ function Project() {
               <FontAwesomeIcon icon='redo-alt' size='1x' />
             </div>
           </div>
-
           <div className='pl-4 text-white truncate whitespace-pre-wrap'> {output} </div>
         </div>
+
       </div >
     </div>
   )
