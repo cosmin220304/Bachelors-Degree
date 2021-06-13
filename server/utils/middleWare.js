@@ -6,9 +6,9 @@ module.exports.middleWare = (req, res, next) => {
     if (!token) return res.status(401).json({ message: "Missing token" })
     if (!req.body) return res.status(400).json({ message: "Missing body" })
 
-    const claims = jwt.decode(token, process.env.SECRET)
+    const claims = jwt.decode(token, process.env.SECRET || require("./secret.js").SECRET)
     req.user = claims
-    req.token = req.headers.authorization
+    req.token = `Bearer ${process.env.JWT || require("./secret.js").JWT}`
     next()
   } catch (error) {
     console.log(error.response ? error.response.data : error)
