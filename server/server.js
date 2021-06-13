@@ -51,7 +51,7 @@ mongoose
     app.use("/api", router)
 
     //Api gateway
-    app.use("/recognize", middleWare, async (req, res) => {
+    app.use("/api/recognize", middleWare, async (req, res) => {
       try {
         const language = req.body.language
         const base64Image = req.body.base64Image
@@ -79,7 +79,7 @@ mongoose
     })
 
     //Api gateway
-    app.use("/compile", middleWare, async (req, res) => {
+    app.use("/api/compile", middleWare, async (req, res) => {
       try {
         const language = req.body.language
         const code = req.body.code
@@ -104,6 +104,8 @@ mongoose
         res.sendStatus(500)
       }
     })
+
+    app.get("/api/languages", (req, res) => res.json({ languages: acceptedLangauges }))
 
     app.get("**", (req, res) => res.sendFile(path.join(__dirname, "build", "index.html")))
 

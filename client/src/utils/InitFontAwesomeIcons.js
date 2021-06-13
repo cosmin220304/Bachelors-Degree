@@ -1,3 +1,4 @@
+//https://stackoverflow.com/questions/52625741/react-fontawesome-importing-all-icons
 import { library } from '@fortawesome/fontawesome-svg-core'
 import * as Icons from '@fortawesome/free-solid-svg-icons'
 

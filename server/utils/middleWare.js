@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken")
 
 module.exports.middleWare = (req, res, next) => {
   try {
+    console.log(req.body, req.headers)
     const token = req.headers.authorization && req.headers.authorization.split(" ")[1]
     if (!token) return res.status(401).json({ message: "Missing token" })
     if (!req.body) return res.status(400).json({ message: "Missing body" })

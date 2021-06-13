@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 function CreateProjectButton({ className }) {
   return (
-    <Link to='/project' className={className}>
+    <Link to='/project/new' className={className}>
       <svg width='94' height='94' viewBox='0 0 94 94' fill='none' xmlns='http://www.w3.org/2000/svg'>
         <g filter='url(#filter0_d)'>
           <circle cx='47' cy='43' r='43' fill='#DB324D' />

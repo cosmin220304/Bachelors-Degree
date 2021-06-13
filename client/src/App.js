@@ -15,7 +15,7 @@ export default class App extends Component {
         <Switch>
           <Route path='/auth' component={Auth} />
           <PrivateRoute exact path='/' component={Home} />
-          <PrivateRoute path='/project' component={Project} />
+          <PrivateRoute path='/project/:id' component={Project} />
         </Switch>
       </Router>
     );

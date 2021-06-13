@@ -12,3 +12,10 @@ a, .no-decoration, a:hover, .no-decoration:hover {
   text-decoration: none;
   color: inherit;
 }
+
+.inset-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

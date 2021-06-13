@@ -1,18 +1,30 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import NoProjectsFoundArrow from './components/NoProjectsFoundArrow'
 import CreateProjectButton from './components/CreateProjectButton'
 import { v4 as uuidv4 } from 'uuid'
 import NoProjectsCard from './components/NoProjectsCard'
 import ProjectCard from './components/ProjectCard'
 import date from 'date-and-time';
+import { UserContext } from '../../utils/UseUserContext'
 
 function Home() {
-  const [projects, setProjects] = useState([
+  const [user,] = useContext(UserContext)
+  const [projects,] = useState([
     {
       language: 'cpp',
       name: 'test',
       lastModified: date.format(new Date(), 'MMM D YYYY'),
       lastAccessed: date.format(new Date(), 'MMM D YYYY'),
+      author: user.username,
+      id: user.uid
+    },
+    {
+      language: 'cpp',
+      name: 'test',
+      lastModified: date.format(new Date(), 'MMM D YYYY'),
+      lastAccessed: date.format(new Date(), 'MMM D YYYY'),
+      author: 'stefan',
+      id: user.uid
     },
   ])
 
@@ -26,11 +38,13 @@ function Home() {
             language={p.language}
             lastModified={p.lastModified}
             lastAccessed={p.lastAccessed}
+            author={p.author}
+            id={p.id}
           />
         ))}
       </div>
 
-      { projects.length === 0 && <NoProjectsCard className='grid place-items-center m-auto md:w-6/12' />}
+      {projects.length === 0 && <NoProjectsCard className='grid place-items-center m-auto md:w-6/12' />}
 
       <div className='h-screen' />
       <div className='sticky bottom-4 right-4 flex flex-col'>

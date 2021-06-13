@@ -12,7 +12,6 @@ function Auth() {
     return <Login />
   }
 
-  console.log(user, user.username)
   if (!user.username) {
     return <Register />
   }
