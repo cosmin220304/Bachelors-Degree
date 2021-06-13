@@ -177,6 +177,39 @@ describe("users tests", () => {
     expect(data).toHaveProperty("error", "no users found!")
   })
 
+  it("should throw error for delete on invalid user id", async () => {
+    //arrange
+    const req = { params: { id: "invalid" }, query: {} }
+
+    //act
+    await user.removeUserById(req, res)
+
+    //assert
+    expect(status).toBe(404)
+    expect(data.error).toBe("user not found")
+  })
+
+  it("should throw error for non existing user", async () => {
+    //arrange 
+    const user_to_be_deleted = {
+      "username": "username that will be deleted",
+      "email": "email that will be deleted"
+    }
+    const req = { params: {}, query: {}, body: user_to_be_deleted }
+
+    //act
+    await user.createUser(req, res)
+    req.params.id = data.user._id
+    await user.removeUserById(req, res)
+    status = 200
+    data = null
+    await user.removeUserById(req, res)
+
+    //assert
+    expect(status).toBe(404)
+    expect(data.error).toBe("user not found")
+  })
+
   it("check for 500 erros for 100% code coverage", async () => {
     //arrange
     console.log = jest.fn()
