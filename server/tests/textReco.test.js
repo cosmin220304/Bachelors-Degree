@@ -28,17 +28,12 @@ describe.skip("textReco microservice tests", () => {
   })
 
   it("no jwt should return error", async () => {
-    var body = JSON.stringify({
-      "code": "print(\"Hello World!\")"
-    });
-
     var config = {
       method: "post",
       url: url,
       headers: {
         "Content-Type": "application/json"
       },
-      data: body
     };
 
     let error = null

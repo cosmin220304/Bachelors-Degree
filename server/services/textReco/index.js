@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken")
 const fs = require("fs")
 const express = require("express")
 const { v4: uuidv4 } = require("uuid")
@@ -25,7 +26,22 @@ const asyncWriteFile = (fileName, base64Image) => {
   })
 }
 
-app.post("/", async (req, res) => {
+const middleWare = (req, res, next) => {
+  try {
+    const token = req.headers.authorization && req.headers.authorization.split(" ")[1]
+    if (!token) return res.status(401).json({ message: "Missing token" })
+
+    const claims = jwt.decode(token, process.env.SECRET || require("./secret.js").SECRET)
+    req.user = claims
+    next()
+
+  } catch (error) {
+    console.log(error.response ? error.response.data : error)
+    res.sendStatus(500)
+  }
+}
+
+app.post("/", middleWare, async (req, res) => {
   const uuid = uuidv4()
   const fileName = `${uuid}.jpg`
   const imgPath = `${__dirname}/${uuid}.jpg`
@@ -51,14 +67,13 @@ app.post("/", async (req, res) => {
       azure_text: await azure_text,
       google_text: await google_text,
     }
-    res.send({ ...all_results })
+    res.json({ ...all_results })
 
   } catch (err) {
-    console.log("textReco => ", err.response ? JSON.stringify(err.response.data) : err)
+    console.log("textReco => ", err)
     res.sendStatus(500)
   } finally {
-    // Remove image
-    fs.unlink(imgPath, (err) => console.log("textReco => ", err))
+    fs.unlink(imgPath, (err) => console.log("textReco removing image => ", err))
   }
 })
 
