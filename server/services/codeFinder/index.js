@@ -1,13 +1,12 @@
 const jwt = require("jsonwebtoken")
+const axios = require("axios")
 const express = require("express")
 const port = process.env.PORT || 8079
+const algorithmia = require("algorithmia")
 require("dotenv").config()
 
-//Image redirect for azure
-const heroTextRecoUrl = "todo"
-const localTextRecoUrl = "http://localhost:8080"
-const enviroment = process.env.NODE_ENV || require("./secret.js").NODE_ENV
-const textRecoApi = enviroment === "production" ? heroTextRecoUrl : localTextRecoUrl
+const enviroment = process.env.NODE_ENV || "development"
+const textRecoApi = enviroment === "development" ? "http://localhost:8080" : "https://cosmin-afta-text-reco.herokuapp.com/"
 
 const app = express()
 app.use(express.json())
@@ -21,6 +20,7 @@ const middleWare = (req, res, next) => {
 
     const claims = jwt.decode(token, process.env.SECRET || require("./secret.js").SECRET)
     req.user = claims
+    req.token = req.headers.authorization
     next()
 
   } catch (error) {
@@ -29,18 +29,77 @@ const middleWare = (req, res, next) => {
   }
 }
 
+const getProbability = (input, language) => {
+  return new Promise((resolve, reject) => {
+    try {
+      algorithmia.client("simhyPYvZBQc/VqJmRxmrJhkALx1")//todo
+        .algo("PetiteProgrammer/ProgrammingLanguageIdentification/0.1.3")
+        .pipe(input)
+        .then((response) => resolve(
+          response.result.filter(r => r[0] === language)[1])
+        )
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
+
 app.post("/", middleWare, async (req, res) => {
   try {
-    //const base64Image = req.body.base64Image
+    const base64Image = req.body.base64Image
+    const language = req.body.language
 
-    res.send({ "message": "ok" })
+    const config = {
+      method: 'post',
+      url: textRecoApi,
+      headers: {
+        'Authorization': req.token,
+        'Content-Type': 'application/json'
+      },
+      data: { base64Image }
+    };
+    const { data } = await axios(config)
+
+    const { azure_text: A, google_text: G } = data
+    const closedBracketsLikeCharacters = "5S3}"
+    let code = ""
+    let i = 0; const n = A.length
+    let j = 0; const m = G.length
+
+    while (i < n && j < m) {
+      if (A[i].length === 1 && G[j].length === 1) {
+        i += 1
+        j += 1
+        if (A[i] === "") continue
+        if (closedBracketsLikeCharacters.includes(A[i]) || closedBracketsLikeCharacters.includes(G[i])) {
+          code += "}"
+        }
+        else {
+          code += "{"
+        }
+      }
+      else if (A[i].length === 1) {
+        i += 1
+        if (A[i] === "") continue
+        code += closedBracketsLikeCharacters.includes(A[i]) ? "}" : "{"
+      }
+      else if (G[j].length === 1) {
+        j += 1
+        if (G[j] === "") continue
+        code += closedBracketsLikeCharacters.includes(G[j]) ? "}" : "{"
+      }
+      else {
+        code += getProbability(A[i], language) > getProbability(G[j], language) ? A[i] : G[j]
+        i++;
+        j++;
+      }
+      code += "\r\n"
+    }
+
+    res.json({ code })
 
   } catch (err) {
-    console.log("codeFinder => ",
-      err.response
-        ? JSON.stringify(err.response.data)
-        : err
-    )
+    console.log("codeFinder => ", err)
     res.sendStatus(500)
   }
 })
