@@ -5,14 +5,10 @@ import LanguageDropDown from '../components/LanguageDropDown'
 import Loader from '../../../components/Loader/Loader'
 import Submit from '../components/Submit'
 
-function CodeView({ className, code, setCode, language, setLanguage }) {
+function CodeView({ className, code, setCode, language, setLanguage, setOutput }) {
   const [localCode, setLocalCode] = useState(code)
   const [recentTypedCode, setRecentTypedCode] = useState(code)
   const [loading, setLoading] = useState(false)
-
-  useEffect(() => {
-    console.log(language)
-  }, [language])
 
   useEffect(() => {
     const updateLocalCode = setTimeout(() => {
@@ -65,7 +61,7 @@ function CodeView({ className, code, setCode, language, setLanguage }) {
       //todo remove this ^
       await new Promise(r => setTimeout(r, 2 * 1000))
       const data = { stdout: "3\n", stderr: "", error: null }
-      console.log(data)
+      setOutput(data)
     } catch {
       alert('request failed, try again in 2 minutes!')
     }

@@ -15,10 +15,6 @@ function WebCamView({ className, setCode, language, setLanguage }) {
   const [loading, setLoading] = useState(false)
   const webcamRef = useRef()
 
-  useEffect(() => {
-    console.log(language)
-  }, [language])
-
   const takePhoto = useCallback(() => {
     if (loading) {
       alert('Wait for task to finish loading!')

@@ -5,7 +5,6 @@ function LanguageDropDown({ className, setLanguage, language }) {
   const [languagesList, setLanguagesList] = useState([])
 
   useEffect(() => {
-    console.log(language);
     setLanguagesList([]);
     (async function () {
       const { data } = await axios.get('/api/languages').catch()
