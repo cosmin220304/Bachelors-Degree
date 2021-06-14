@@ -13,8 +13,8 @@ function CodeView({ className, code, setCode, language, setLanguage, setOutput }
 
   useEffect(() => {
     const updateLocalCode = setTimeout(() => {
-      setLocalCode(recentTypedCode)
-    }, 5000)
+      setCode(recentTypedCode)
+    }, 1000)
 
     return () => clearTimeout(updateLocalCode)
   }, [recentTypedCode])
@@ -90,9 +90,9 @@ function CodeView({ className, code, setCode, language, setLanguage, setOutput }
         </code>
       </FocusLock>
 
-      <div className='w-full flex p-2 pt-0 pb-0 gap-8 items-center cursor-pointer'>
-        <LanguageDropDown className='flex-1' language={language} setLanguage={setLanguage} />
-        <div className='pr-2' onClick={erase}>
+      <div className='w-full flex p-2 pt-0 pb-0 gap-8 items-center'>
+        <LanguageDropDown className='flex-1 cursor-pointer' language={language} setLanguage={setLanguage} />
+        <div className='pr-2 cursor-pointer' onClick={erase}>
           <FontAwesomeIcon icon='trash-alt' size='2x' color='white' />
         </div>
       </div>
