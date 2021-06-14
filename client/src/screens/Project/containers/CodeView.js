@@ -82,11 +82,11 @@ function CodeView({ className, code, setCode, language, setLanguage, setOutput }
       </FocusLock>
 
       <div className='w-full flex p-2 pt-0 pb-0 gap-8 items-center'>
-        <LanguageDropDown className='flex-1 cursor-pointer' language={language} setLanguage={setLanguage} />
-        <div className='cursor-pointer' onClick={() => setCode(recentTypedCode)}>
+        <LanguageDropDown className='flex-1' language={language} setLanguage={setLanguage} />
+        <div className='cursor-pointer hover:text-gray-400' onClick={() => setCode(recentTypedCode)}>
           <FontAwesomeIcon icon='save' size='2x' color='white' />
         </div>
-        <div className='pr-2 cursor-pointer' onClick={() => setCode('')}>
+        <div className='pr-2 cursor-pointer hover:text-gray-400' onClick={() => setCode('')}>
           <FontAwesomeIcon icon='trash-alt' size='2x' color='white' />
         </div>
       </div>

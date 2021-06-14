@@ -25,7 +25,7 @@ function LanguageDropDown({ className, setLanguage, language }) {
     <select
       onChange={handleChange}
       name='language'
-      className={`rounded p-2 ${className}`}
+      className={`rounded p-2 cursor-pointer ${className}`}
     >
       {
         languagesList.map(language =>

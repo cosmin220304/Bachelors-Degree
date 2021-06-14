@@ -86,11 +86,11 @@ function DrawView({ className, setCode, language, setLanguage }) {
       </div>
 
       <div className='w-full mt-2 flex p-2 pt-0 pb-0 gap-8 items-center'>
-        <LanguageDropDown className='flex-1 cursor-pointer' language={language} setLanguage={setLanguage} />
-        <div className='text-white cursor-pointer' onClick={clear}>
+        <LanguageDropDown className='flex-1' language={language} setLanguage={setLanguage} />
+        <div className='text-white cursor-pointer hover:text-gray-400' onClick={clear}>
           <FontAwesomeIcon icon='undo' size='2x' />
         </div>
-        <div className='text-white cursor-pointer pr-2' onClick={clear}>
+        <div className='text-white cursor-pointer pr-2 hover:text-gray-400' onClick={clear}>
           <FontAwesomeIcon icon='trash-alt' size='2x' />
         </div>
       </div>
