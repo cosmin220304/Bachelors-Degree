@@ -31,7 +31,9 @@ describe("users tests", () => {
     //arrange
     const body = {
       "username": "cosmin0123",
-      "email": "cosmin"
+      "email": "cosmin",
+      "phoneNumber": "123",
+      "uid": "123"
     }
     const req = { params: {}, query: {}, body }
 
@@ -46,7 +48,9 @@ describe("users tests", () => {
     //arrange
     const body = {
       "username": "cosmin0123",
-      "email": "cosmin"
+      "email": "cosmin",
+      "phoneNumber": "123",
+      "uid": "123"
     }
     const req = { params: {}, query: {}, body }
 
@@ -70,18 +74,10 @@ describe("users tests", () => {
   })
 
   it("can get user by id", async () => {
-    //arrange 
-    const body = {
-      "username": "new cosmin0123",
-      "email": "new cosmin"
-    }
-    const req = { params: {}, query: {}, body }
+    //arrange  
+    const req = { params: { id: "123" }, query: {} }
 
-    //act
-    await user.createUser(req, res)
-    req.params.id = data.user._id
-    status = 200
-    data = null
+    //act  
     await user.getUserById(req, res)
 
     //assert
@@ -93,7 +89,9 @@ describe("users tests", () => {
     //arrange 
     const expected = {
       "username": "cosmin0123",
-      "email": "cosmin"
+      "email": "cosmin",
+      "phoneNumber": "123",
+      "uid": "123"
     }
     const req = { params: {}, query: { username: "cosmin0123" }, body: {} }
 
@@ -127,23 +125,14 @@ describe("users tests", () => {
 
   it("can update user", async () => {
     //arrange 
-    const post_body = {
-      "username": "old username",
-      "email": "old email"
-    }
+    oldEmail = "cosmin"
     const update_body = {
       "username": "new username",
     }
-    const post_req = { params: {}, query: {}, body: post_body }
-    const update_req = { params: {}, query: {}, body: update_body }
+    const req = { params: { id: "123" }, query: {}, body: update_body }
 
     //act
-    await user.createUser(post_req, res)
-    update_req.params.id = data.user._id
-    status = 200
-    data = null
-
-    await user.updateUserById(update_req, res)
+    await user.updateUserById(req, res)
     const update_status = status
 
     await user.getUsers({ params: {}, query: { "username": "new username" }, body: {} }, res)
@@ -151,21 +140,23 @@ describe("users tests", () => {
     //assert
     expect(update_status).toBe(200)
     expect(data).toHaveLength(1)
-    expect(data[0]).toHaveProperty("email", post_body.email)
-    expect(data[0]).toHaveProperty("username", update_body.username)
+    expect(data[0]).toHaveProperty("email", "cosmin")
+    expect(data[0]).toHaveProperty("username", "new username")
   })
 
   it("can delete user", async () => {
     //arrange 
     const user_to_be_deleted = {
       "username": "username that will be deleted",
-      "email": "email that will be deleted"
+      "email": "email that will be deleted",
+      "phoneNumber": "12345",
+      "uid": "12345"
     }
     const req = { params: {}, query: {}, body: user_to_be_deleted }
 
     //act
     await user.createUser(req, res)
-    req.params.id = data.user._id
+    req.params.id = data.user.uid
     status = 200
     data = null
     await user.removeUserById(req, res)
@@ -177,32 +168,11 @@ describe("users tests", () => {
     expect(data).toHaveProperty("error", "no users found!")
   })
 
-  it("should throw error for delete on invalid user id", async () => {
-    //arrange
+  it("should throw error for non existing user", async () => {
+    //arrange  
     const req = { params: { id: "invalid" }, query: {} }
 
-    //act
-    await user.removeUserById(req, res)
-
-    //assert
-    expect(status).toBe(404)
-    expect(data.error).toBe("user not found")
-  })
-
-  it("should throw error for non existing user", async () => {
-    //arrange 
-    const user_to_be_deleted = {
-      "username": "username that will be deleted",
-      "email": "email that will be deleted"
-    }
-    const req = { params: {}, query: {}, body: user_to_be_deleted }
-
-    //act
-    await user.createUser(req, res)
-    req.params.id = data.user._id
-    await user.removeUserById(req, res)
-    status = 200
-    data = null
+    //act 
     await user.removeUserById(req, res)
 
     //assert

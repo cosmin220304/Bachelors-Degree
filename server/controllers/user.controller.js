@@ -16,7 +16,7 @@ module.exports.getUsers = async (req, res) => {
     users = await db.user.find(filter, {}, { skip: pageSize * pageNumber, limit: pageSize })
     if (!users || users.length == 0) return res.status(404).json({ error: "no users found!" })
 
-    res.json(users)
+    res.json(users.map(u => ({ uid: u.uid, username: u.username })))
 
   } catch (error) {
     console.log(error)
@@ -31,7 +31,7 @@ module.exports.getUserById = async (req, res) => {
     const user = await db.user.findOne({ uid: id })
     if (!user || user.length == 0) return res.status(404).json({ error: "user not found" })
 
-    res.json(user[0])
+    res.json(user)
 
   } catch (error) {
     console.log(error)
@@ -47,6 +47,9 @@ module.exports.updateUserById = async (req, res) => {
     if (!found) return res.status(404).json({ error: "user not found" })
 
     if (!req.body || req.body === {}) return res.status(204).json({ message: "nothing was updated" })
+
+    if (req.body.uid) delete req.body.uid
+    if (req.body.phoneNumber) delete req.body.phoneNumber
 
     await db.user.updateOne(
       { uid: id },
