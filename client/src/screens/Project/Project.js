@@ -6,6 +6,7 @@ import WebCamView from './containers/WebCamView'
 import CodeView from './containers/CodeView'
 import DrawView from './containers/DrawView'
 import OuputView from './containers/OuputView'
+import SaveProject from './components/SaveProject'
 
 function Project() {
   const { id } = useParams()
@@ -50,6 +51,7 @@ function Project() {
 
   return (
     <div className='h-full bg-black'>
+      <SaveProject className='md:ml-16' />
       <div className='bg-black m-auto md:w-6/12 md:grid md:grid-cols-2 md:ml-16'>
 
         <CurrentView />

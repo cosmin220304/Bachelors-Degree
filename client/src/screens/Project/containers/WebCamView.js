@@ -36,7 +36,7 @@ function WebCamView({ className, setCode, language, setLanguage }) {
       //todo: remove ^
       await new Promise(r => setTimeout(r, 5 * 1000))
       const data = { code: 'console.log("camera")' }
-      setCode(prev => prev + data.code)
+      setCode(prev => (prev + '\n' + data.code).trim())
     } catch {
       alert('request failed, try again in 2 minutes!')
     }

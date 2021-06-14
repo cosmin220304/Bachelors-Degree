@@ -51,7 +51,7 @@ function DrawView({ className, setCode, language, setLanguage }) {
         //todo: remove ^
         await new Promise(r => setTimeout(r, 5 * 1000))
         const data = { code: 'console.log("draw")' }
-        setCode(prev => prev + data.code)
+        setCode(prev => (prev + '\n' + data.code).trim())
       } catch (err) {
         console.log(err)
         alert('request failed, try again in 2 minutes!')
@@ -62,8 +62,8 @@ function DrawView({ className, setCode, language, setLanguage }) {
   }
 
   return (
-    <div className={className}>
-      <Loader isVisible={loading} className='absolute inset-center z-10 text-white' />
+    <div className={className + ' relative'}>
+      <Loader isVisible={loading} className='absolute inset-center z-50' />
 
       <div className='h-96'>
         <CanvasDraw

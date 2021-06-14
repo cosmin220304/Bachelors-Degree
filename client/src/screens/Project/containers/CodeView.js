@@ -13,7 +13,7 @@ function CodeView({ className, code, setCode, language, setLanguage, setOutput }
   useEffect(() => {
     const updateCode = setTimeout(() => {
       setCode(recentTypedCode)
-    }, 5000)
+    }, 2500)
 
     return () => clearTimeout(updateCode)
   }, [recentTypedCode])
