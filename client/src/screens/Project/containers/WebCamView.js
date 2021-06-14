@@ -13,7 +13,7 @@ const videoConstraints = {
 
 function WebCamView({ className, setCode, language, setLanguage }) {
   const [loading, setLoading] = useState(false)
-  const webcamRef = useRef()
+  let webcamRef = useRef()
 
   const takePhoto = useCallback(() => {
     if (loading) {
@@ -35,8 +35,8 @@ function WebCamView({ className, setCode, language, setLanguage }) {
       //const { data } = await axios.post('/api/recognize', { language, base64Image }, { headers })
       //todo: remove ^
       await new Promise(r => setTimeout(r, 5 * 1000))
-      const data = { code: 'Console.log 134)\r\n' }
-      setCode(prev => prev + '\n' + data.code)
+      const data = { code: 'console.log("camera")' }
+      setCode(prev => prev + data.code)
     } catch {
       alert('request failed, try again in 2 minutes!')
     }

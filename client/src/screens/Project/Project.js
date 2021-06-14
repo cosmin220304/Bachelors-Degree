@@ -4,6 +4,7 @@ import axios from 'axios'
 import Button from './components/Button'
 import WebCamView from './containers/WebCamView'
 import CodeView from './containers/CodeView'
+import DrawView from './containers/DrawView'
 import OuputView from './containers/OuputView'
 
 function Project() {
@@ -24,7 +25,7 @@ function Project() {
       const { data } = await axios(`/api/projects/${id}`)
       setCode({ ...data.code })
       setLanguage({ ...data.language })
-    } catch {
+    } catch (err) {
       alert('project doesn\'t exist!')
       history.push('/')
     }
@@ -41,7 +42,7 @@ function Project() {
     }
 
     if (currentView === 'Draw') {
-      return <div> todo </div>
+      return <DrawView setCode={setCode} language={language} setLanguage={setLanguage} />
     }
 
     return <WebCamView setCode={setCode} language={language} setLanguage={setLanguage} />
