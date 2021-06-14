@@ -1,24 +1,28 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
-function DropDown({ className, changeHandler }) {
-  const [languages, setLanguage] = useState([])
+function LanguageDropDown({ className, setLanguage }) {
+  const [languagesList, setLanguagesList] = useState([])
 
   useEffect(() => {
     (async function () {
       const { data } = await axios.get('/api/languages').catch()
-      setLanguage(data.languages)
+      setLanguagesList(data.languages)
     })()
   }, [])
 
+  const handleChange = (e) => {
+    setLanguage(e.target.value)
+  }
+
   return (
     <select
-      onChange={changeHandler}
+      onChange={handleChange}
       name="languages"
       className={`rounded p-2 ${className}`}
     >
       {
-        languages.map(language =>
+        languagesList.map(language =>
           <option key={language} value={language}>{language}</option>
         )
       }
@@ -26,4 +30,4 @@ function DropDown({ className, changeHandler }) {
   )
 }
 
-export default DropDown
+export default LanguageDropDown

@@ -1,25 +1,22 @@
 import React, { useRef, useCallback, useState, useEffect } from 'react'
-import Webcam from 'react-webcam'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useHistory, useParams } from 'react-router-dom'
 import axios from 'axios'
-import DropDown from './components/DropDown'
+import LanguageDropDown from './components/LanguageDropDown'
+import Button from './components/Button'
 import Loader from '../../components/Loader/Loader'
-
-const videoConstraints = {
-  width: 720,
-  height: 1280,
-  facingMode: 'environment'
-}
+import WebCamView from './containers/WebCamView'
+import CodeView from './containers/CodeView'
+import OuputView from './containers/OuputView'
 
 function Project() {
   const { id } = useParams()
   const history = useHistory()
   const webcamRef = useRef()
-  const [code, setCode] = useState()
+  const [code, setCode] = useState('for i in range(4)\r\nConsole.log 13)\r\nasdadasd\r\nasdas\r\n')
   const [output, seOutput] = useState()
   const [language, setLanguage] = useState('javascript')
-  const [outputIsLoading, setOutputIsLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const loadProjectData = async () => {
     try {
@@ -38,14 +35,19 @@ function Project() {
   }, [id])
 
   const takePhoto = useCallback(() => {
-    if (outputIsLoading) return
+    if (loading) {
+      alert('Wait for task to finish loading!')
+      return
+    }
+    if (!webcamRef.current) return
+
     const base64Image = webcamRef.current.getScreenshot()
     recognizeAndSetCode(base64Image)
   }, [webcamRef])
 
   const recognizeAndSetCode = async (base64Image) => {
     try {
-      setOutputIsLoading(true)
+      setLoading(true)
       const headers = {
         'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.J17JYU9weVb9fVBqmhS5JZjEdzgjOAvz-21uuO7Eg4w',
         'Content-Type': 'application/json'
@@ -53,9 +55,9 @@ function Project() {
       //const { data } = await axios.post('/api/recognize', { language, base64Image }, { headers })
       //todo: remove ^
       await new Promise(r => setTimeout(r, 5 * 1000))
-      const data = { code: "Console.log 13)\r\n" }
+      const data = { code: 'Console.log 13)\r\n' }
       setCode(data.code)
-      setOutputIsLoading(false)
+      setLoading(false)
     } catch {
       alert('request failed, try again in 2 minutes!')
     }
@@ -64,49 +66,19 @@ function Project() {
   return (
     <div className='h-full bg-black'>
       <div className='bg-black m-auto md:w-6/12 md:grid md:grid-cols-2 md:ml-16'>
+        <Loader isVisible={loading} className='absolute inset-center z-10 text-white' />
+        {/* <LanguageDropDown className='absolute z-10' setLanguage={setLanguage} /> */}
 
-        <Loader isVisible={outputIsLoading} className='absolute inset-center z-10 text-white' />
-        <DropDown className='absolute z-10' changeHandler={(e) => setLanguage(e.target.value)} />
-        <div className='absolute z-10 right-2 text-white'>
-          <FontAwesomeIcon icon='expand-arrows-alt' size='1x' />
-        </div>
+        {/* <WebCamView webcamRef={webcamRef} /> */}
+        <CodeView code={code} setCode={setCode} />
 
-        <Webcam
-          screenshotFormat='image/jpeg'
-          audio={false}
-          videoConstraints={videoConstraints}
-          ref={webcamRef}
-          className='m-auto'
-        />
-
-        {/* Buttons */}
         <div className='grid grid-cols-3 text-center gap-2 m-2 md:mt-0 md:h-32'>
-          <div className='p-4 text-red-900 bg-red-500 rounded-lg self-start'>
-            <FontAwesomeIcon icon='pen' size='4x' />
-          </div>
-          <div className='p-4 text-red-900 bg-red-500 rounded-lg self-start' onClick={takePhoto}>
-            <FontAwesomeIcon icon='camera' size='4x' />
-          </div>
-          <div className='p-4 text-red-900 bg-red-500 rounded-lg self-start'>
-            <FontAwesomeIcon icon='code' size='4x' />
-          </div>
+          <Button icon='pen' onClick={() => { }} />
+          <Button icon='camera' onClick={takePhoto} />
+          <Button icon='code' onClick={() => { }} />
         </div>
 
-        {/* Output */}
-        <div className='p-4 pt-0'>
-          <div className='relative flex'>
-            <div className='text-white flex-1'>
-              Output:
-            </div>
-            <div className='text-white'>
-              <FontAwesomeIcon icon='expand-arrows-alt' size='1x' />
-            </div>
-            <div className='text-white absolute top-8 right-0'>
-              <FontAwesomeIcon icon='redo-alt' size='1x' />
-            </div>
-          </div>
-          <div className='pl-4 text-white truncate whitespace-pre-wrap'> {output} </div>
-        </div>
+        <OuputView output={output} className='p-4 pt-0' />
 
       </div >
     </div>
