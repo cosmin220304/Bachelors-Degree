@@ -5,12 +5,14 @@ import LanguageDropDown from '../components/LanguageDropDown'
 import Loader from '../../../components/Loader/Loader'
 import Submit from '../components/Submit'
 
-function CodeView({ className, code, setCode, savedLanguage }) {
-  console.log(code)
-  const [language, setLanguage] = useState(savedLanguage)
+function CodeView({ className, code, setCode, language, setLanguage }) {
   const [localCode, setLocalCode] = useState(code)
   const [recentTypedCode, setRecentTypedCode] = useState(code)
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    console.log(language)
+  }, [language])
 
   useEffect(() => {
     const updateLocalCode = setTimeout(() => {
@@ -80,7 +82,7 @@ function CodeView({ className, code, setCode, savedLanguage }) {
           {localCode}
         </code>
       </FocusLock>
-      <LanguageDropDown className='ml-2' setLanguage={setLanguage} />
+      <LanguageDropDown className='ml-2' language={language} setLanguage={setLanguage} />
 
       <Submit onClick={handleRun} text='Run it!' />
     </div >

@@ -11,10 +11,13 @@ const videoConstraints = {
   facingMode: 'environment'
 }
 
-function WebCamView({ className, setCode, savedLanguage }) {
-  const [language, setLanguage] = useState(savedLanguage)
+function WebCamView({ className, setCode, language, setLanguage }) {
   const [loading, setLoading] = useState(false)
   const webcamRef = useRef()
+
+  useEffect(() => {
+    console.log(language)
+  }, [language])
 
   const takePhoto = useCallback(() => {
     if (loading) {
@@ -48,7 +51,7 @@ function WebCamView({ className, setCode, savedLanguage }) {
     <div className={className}>
       <Loader isVisible={loading} className='absolute inset-center z-10 text-white' />
 
-      <LanguageDropDown className='absolute z-10' setLanguage={setLanguage} />
+      <LanguageDropDown className='absolute z-10' setLanguage={setLanguage} language={language} />
 
       <div className='absolute z-10 right-2 text-white'>
         <FontAwesomeIcon icon='expand-arrows-alt' size='1x' />
