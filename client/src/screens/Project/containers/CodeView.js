@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import FocusLock from 'react-focus-lock'
 import axios from 'axios'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import LanguageDropDown from '../components/LanguageDropDown'
 import Loader from '../../../components/Loader/Loader'
 import Submit from '../components/Submit'
@@ -49,6 +50,11 @@ function CodeView({ className, code, setCode, language, setLanguage, setOutput }
       alert('Wait for task to finish loading!')
       return
     }
+    if (code === '') {
+      alert('No code to run!')
+      return
+    }
+
     setLoading(true)
     setLocalCode(recentTypedCode)
     setCode(recentTypedCode)
@@ -68,17 +74,28 @@ function CodeView({ className, code, setCode, language, setLanguage, setOutput }
     setLoading(false)
   }
 
+  const erase = () => {
+    setRecentTypedCode('')
+    setLocalCode('')
+    setCode('')
+  }
+
   return (
     <div className={className}>
       <Loader isVisible={loading} className='absolute inset-center z-10 text-white' />
       <FocusLock>
         <code id='edit-text' contentEditable onInput={handleChange} suppressContentEditableWarning
-          className=' whitespace-pre-wrap bg-white p-4 m-2 mt-0 h-full flex flex-col'
-        >
+          className=' whitespace-pre-wrap bg-white p-4 m-2 mt-0 h-full flex flex-col'>
           {localCode}
         </code>
       </FocusLock>
-      <LanguageDropDown className='ml-2' language={language} setLanguage={setLanguage} />
+
+      <div className='w-full flex p-2 pt-0 pb-0 gap-8 items-center cursor-pointer'>
+        <LanguageDropDown className='flex-1' language={language} setLanguage={setLanguage} />
+        <div className='pr-2' onClick={erase}>
+          <FontAwesomeIcon icon='trash-alt' size='2x' color='white' />
+        </div>
+      </div>
 
       <Submit onClick={handleRun} text='Run it!' />
     </div >

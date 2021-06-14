@@ -9,10 +9,10 @@ import OuputView from './containers/OuputView'
 function Project() {
   const { id } = useParams()
   const history = useHistory()
-  const [code, setCode] = useState()
+  const [code, setCode] = useState('')
   const [output, setOutput] = useState()
   const [language, setLanguage] = useState('javascript')
-  const [currentView, setCurrentView] = useState()
+  const [currentView, setCurrentView] = useState('Camera')
 
   useEffect(() => {
     if (!id || id === 'new') return
