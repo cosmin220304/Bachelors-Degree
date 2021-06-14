@@ -34,7 +34,7 @@ function Project() {
       <div className='bg-black m-auto md:w-6/12 md:grid md:grid-cols-2 md:ml-16'>
 
         <WebCamView setCode={setCode} language={language} setLanguage={setLanguage} />
-        <CodeView code={code} setCode={setCode} language={language} setLanguage={setLanguage} setOutput={setOutput} />
+        {/* <CodeView code={code} setCode={setCode} language={language} setLanguage={setLanguage} setOutput={setOutput} /> */}
 
         <div className='grid grid-cols-3 text-center gap-2 m-2 md:mt-0 md:h-32'>
           <Button icon='pen' onClick={() => { }} />

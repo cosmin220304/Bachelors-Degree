@@ -19,3 +19,19 @@ a, .no-decoration, a:hover, .no-decoration:hover {
   left: 50%;
   transform: translate(-50%, -50%);
 } 
+
+.blink {
+  animation: blink_anim 0.5s infinite;
+}
+
+@keyframes blink_anim {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
