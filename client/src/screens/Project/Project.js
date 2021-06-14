@@ -9,9 +9,15 @@ import OuputView from './containers/OuputView'
 function Project() {
   const { id } = useParams()
   const history = useHistory()
-  const [code, setCode] = useState('for i in range(4)\r\nConsole.log 13)')
+  const [code, setCode] = useState()
   const [output, setOutput] = useState()
   const [language, setLanguage] = useState('javascript')
+  const [currentView, setCurrentView] = useState()
+
+  useEffect(() => {
+    if (!id || id === 'new') return
+    loadProjectData()
+  }, [id])
 
   const loadProjectData = async () => {
     try {
@@ -25,21 +31,32 @@ function Project() {
   }
 
   useEffect(() => {
-    if (!id || id === 'new') return
-    loadProjectData()
-  }, [id])
+    if (!code) return
+    setCurrentView('Code')
+  }, [code])
+
+  const CurrentView = () => {
+    if (currentView === 'Code') {
+      return <CodeView code={code} setCode={setCode} language={language} setLanguage={setLanguage} setOutput={setOutput} />
+    }
+
+    if (currentView === 'Draw') {
+      return <div> todo </div>
+    }
+
+    return <WebCamView setCode={setCode} language={language} setLanguage={setLanguage} />
+  }
 
   return (
     <div className='h-full bg-black'>
       <div className='bg-black m-auto md:w-6/12 md:grid md:grid-cols-2 md:ml-16'>
 
-        <WebCamView setCode={setCode} language={language} setLanguage={setLanguage} />
-        {/* <CodeView code={code} setCode={setCode} language={language} setLanguage={setLanguage} setOutput={setOutput} /> */}
+        <CurrentView />
 
         <div className='grid grid-cols-3 text-center gap-2 m-2 md:mt-0 md:h-32'>
-          <Button icon='pen' onClick={() => { }} />
-          <Button icon='camera' onClick={() => { }} />
-          <Button icon='code' onClick={() => { }} />
+          <Button icon='pen' onClick={() => setCurrentView('Draw')} />
+          <Button icon='camera' onClick={() => setCurrentView('Camera')} />
+          <Button icon='code' onClick={() => setCurrentView('Code')} />
         </div>
 
         <OuputView output={output} className='p-4 pt-0' />
