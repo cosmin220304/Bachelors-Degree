@@ -49,10 +49,6 @@ function WebCamView({ className, setCode, language, setLanguage }) {
 
       <LanguageDropDown className='absolute z-10' setLanguage={setLanguage} language={language} />
 
-      <div className='absolute z-10 right-2 text-white'>
-        <FontAwesomeIcon icon='expand-arrows-alt' size='1x' />
-      </div>
-
       <Webcam
         screenshotFormat='image/jpeg'
         audio={false}
