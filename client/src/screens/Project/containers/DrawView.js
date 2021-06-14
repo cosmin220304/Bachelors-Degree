@@ -62,7 +62,7 @@ function DrawView({ className, setCode, language, setLanguage }) {
   }
 
   return (
-    <div className={className + ' relative'}>
+    <div className={className + ' relative md:w-6/12'}>
       <Loader isVisible={loading} className='absolute inset-center z-50' />
 
       <div className='h-96'>

@@ -72,7 +72,7 @@ function CodeView({ className, code, setCode, language, setLanguage, setOutput }
   }
 
   return (
-    <div className={className}>
+    <div className={className + ' md:w-6/12'}>
       <Loader isVisible={loading} className='absolute inset-center z-10 text-white' />
       <FocusLock>
         <code id='edit-text' contentEditable onInput={handleChange} suppressContentEditableWarning

@@ -37,7 +37,7 @@ function Project() {
     setCurrentView('Code')
   }, [code])
 
-  const CurrentView = () => {
+  const CurrentView = ({ className }) => {
     if (currentView === 'Code') {
       return <CodeView code={code} setCode={setCode} language={language} setLanguage={setLanguage} setOutput={setOutput} />
     }
@@ -51,21 +51,22 @@ function Project() {
 
   return (
     <div className='h-full bg-black'>
+
       <SaveProject className='md:ml-16' />
-      <div className='bg-black m-auto md:w-6/12 md:grid md:grid-cols-2 md:ml-16'>
+      <div className='bg-black m-auto md:w-6/12 md:flex items-start md:ml-16 md:w-full md:h-full'>
 
         <CurrentView />
 
-        <div className='grid grid-cols-3 text-center gap-2 m-2 md:mt-0 md:h-32'>
+        <div className='grid grid-cols-3 text-center gap-2 m-2 md:mt-0'>
           <Button icon='pen' onClick={() => setCurrentView('Draw')} />
           <Button icon='camera' onClick={() => setCurrentView('Camera')} />
           <Button icon='code' onClick={() => setCurrentView('Code')} />
+          <OuputView output={output} className='p-4 pt-0 hidden md:block' />
         </div>
 
-        <OuputView output={output} className='p-4 pt-0' />
-
+        <OuputView output={output} className='p-4 pt-0 md:hidden' />
       </div >
-    </div>
+    </div >
   )
 }
 
