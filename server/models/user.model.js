@@ -19,9 +19,12 @@ const user = new Schema({
     type: String,
     unique: true,
   },
-  // projects: [
-  //   { type: Schema.Types.ObjectId, ref: 'projects' }
-  // ]
+  projects: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "project"
+    }
+  ]
 });
 
 module.exports = model("user", user, "user");
