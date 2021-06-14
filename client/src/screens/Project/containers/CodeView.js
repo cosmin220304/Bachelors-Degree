@@ -7,20 +7,18 @@ import Loader from '../../../components/Loader/Loader'
 import Submit from '../components/Submit'
 
 function CodeView({ className, code, setCode, language, setLanguage, setOutput }) {
-  const [localCode, setLocalCode] = useState(code)
   const [recentTypedCode, setRecentTypedCode] = useState(code)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    const updateLocalCode = setTimeout(() => {
+    const updateCode = setTimeout(() => {
       setCode(recentTypedCode)
-    }, 1000)
+    }, 5000)
 
-    return () => clearTimeout(updateLocalCode)
+    return () => clearTimeout(updateCode)
   }, [recentTypedCode])
 
   useEffect(() => {
-    setLocalCode(code)
     setRecentTypedCode(code)
   }, [code])
 
@@ -56,7 +54,6 @@ function CodeView({ className, code, setCode, language, setLanguage, setOutput }
     }
 
     setLoading(true)
-    setLocalCode(recentTypedCode)
     setCode(recentTypedCode)
     const headers = {
       'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.J17JYU9weVb9fVBqmhS5JZjEdzgjOAvz-21uuO7Eg4w',
@@ -74,25 +71,22 @@ function CodeView({ className, code, setCode, language, setLanguage, setOutput }
     setLoading(false)
   }
 
-  const erase = () => {
-    setRecentTypedCode('')
-    setLocalCode('')
-    setCode('')
-  }
-
   return (
     <div className={className}>
       <Loader isVisible={loading} className='absolute inset-center z-10 text-white' />
       <FocusLock>
         <code id='edit-text' contentEditable onInput={handleChange} suppressContentEditableWarning
           className=' whitespace-pre-wrap bg-white p-4 m-2 mt-0 h-full flex flex-col'>
-          {localCode}
+          {code}
         </code>
       </FocusLock>
 
       <div className='w-full flex p-2 pt-0 pb-0 gap-8 items-center'>
         <LanguageDropDown className='flex-1 cursor-pointer' language={language} setLanguage={setLanguage} />
-        <div className='pr-2 cursor-pointer' onClick={erase}>
+        <div className='cursor-pointer' onClick={() => setCode(recentTypedCode)}>
+          <FontAwesomeIcon icon='save' size='2x' color='white' />
+        </div>
+        <div className='pr-2 cursor-pointer' onClick={() => setCode('')}>
           <FontAwesomeIcon icon='trash-alt' size='2x' color='white' />
         </div>
       </div>
