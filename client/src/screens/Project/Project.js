@@ -52,8 +52,8 @@ function Project() {
   return (
     <div className='h-full bg-black'>
 
-      <SaveProject className='md:ml-16' />
-      <div className='bg-black m-auto md:w-6/12 md:flex items-start md:ml-16 md:w-full md:h-full'>
+      <SaveProject className='md:pl-16' />
+      <div className='bg-black sm:m-auto md:w-6/12 md:flex items-start md:pl-16 md:w-full md:h-full'>
 
         <CurrentView />
 
