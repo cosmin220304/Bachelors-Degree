@@ -6,6 +6,6 @@ const config = {
   messagingSenderId: "232459301858",
   appId: "1:232459301858:web:09b167907e20c9f39cffbb",
   measurementId: "G-62H2TXM9HZ"
-};
+};//todo
 
 export default config
