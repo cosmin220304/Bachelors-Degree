@@ -1,6 +1,5 @@
 {
   "scripts": {
-    "heroku-prebuild": "cd client && npm install",
-    "start": "craco start"
+    "postinstall": "npm install --prefix client"
   }
 }
