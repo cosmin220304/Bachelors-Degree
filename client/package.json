@@ -33,8 +33,8 @@
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.4"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
+    "start": "craco start --max_old_space_size=2048",
+    "build": "craco build --max_old_space_size=2048",
     "test": "craco test",
     "eject": "craco eject"
   },
