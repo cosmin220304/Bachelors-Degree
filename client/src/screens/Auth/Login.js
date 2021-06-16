@@ -19,9 +19,9 @@ function Login() {
         signInSuccessWithAuthResult: (authResult) => {
           const user = authResult.user
           axios.get(`/api/users/${user.uid}`)
-		.then(({ data }) => setUser({ ...data.user }))
-		.catch(err => setUser({ phoneNumber: user.phoneNumber, uid: user.uid })) 
-          return false 
+            .then(({ data }) => setUser({ ...data.user }))
+            .catch(err => setUser({ phoneNumber: user.phoneNumber, uid: user.uid }))
+          return false
         }
       },
       signInOptions: [
