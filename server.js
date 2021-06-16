@@ -107,7 +107,7 @@ mongoose
 
     app.get("/api/languages", (req, res) => res.json({ languages: acceptedLangauges }))
 
-    app.get("**", (req, res) => res.sendFile(path.join(__dirname, "build", "index.html")))
+    app.get("**", (req, res) => res.sendFile("index.html"))
 
     app.listen(port, () => console.log(`listening on ${port}`))
   })
