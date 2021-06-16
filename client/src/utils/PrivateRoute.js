@@ -14,7 +14,7 @@ export default function PrivateRoute({ component: Component, ...rest }) {
     <Route
       {...rest}
       render={(props) =>
-        !user || !user.uid
+        !user || !user.token
           ? <Redirect to={{ pathname: '/auth', state: { prevPath: location.pathname } }} />
           : <Component {...props} />
       }

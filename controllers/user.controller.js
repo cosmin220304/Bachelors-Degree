@@ -1,5 +1,6 @@
-const db = require("../models");
+const db = require("../models")
 const mongoose = require("mongoose")
+const jwt = require("jsonwebtoken")
 
 module.exports.getUsers = async (req, res) => {
   try {
@@ -31,7 +32,8 @@ module.exports.getUserById = async (req, res) => {
     const user = await db.user.findOne({ uid: id })
     if (!user || user.length == 0) return res.status(404).json({ error: "user not found" })
 
-    res.json(user)
+    const token = await jwt.sign({ uid: user.uid }, process.env.SECRET || require("../secret").SECRET);
+    res.json({ ...user._doc, token })
 
   } catch (error) {
     console.log(error)
@@ -42,6 +44,7 @@ module.exports.getUserById = async (req, res) => {
 module.exports.updateUserById = async (req, res) => {
   try {
     const id = req.params.id
+    if (!req.user.admin && req.user.uid !== id) return res.status(401).json({ error: "you are not the user" })
 
     const found = await db.user.findOne({ uid: id })
     if (!found) return res.status(404).json({ error: "user not found" })
@@ -80,6 +83,7 @@ module.exports.createUser = async (req, res) => {
 module.exports.removeUserById = async (req, res) => {
   try {
     const id = req.params.id
+    if (!req.user.admin && req.user.uid !== id) return res.status(401).json({ error: "you are not the user" })
 
     const found = await db.user.findOne({ uid: id })
     if (!found) return res.status(404).json({ error: "user not found" })
@@ -96,6 +100,8 @@ module.exports.removeUserById = async (req, res) => {
 module.exports.createProject = async (req, res) => {
   try {
     const id = req.params.id
+    if (!req.user.admin && req.user.uid !== id) return res.status(401).json({ error: "you are not the user" })
+
     const foundUser = await db.user.findOne({ uid: id })
     if (!foundUser) return res.status(404).json({ error: "user doesn't exist!" })
 

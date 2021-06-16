@@ -5,11 +5,10 @@ module.exports.middleWare = (req, res, next) => {
     console.log(req.body, req.headers)
     const token = req.headers.authorization && req.headers.authorization.split(" ")[1]
     if (!token) return res.status(401).json({ message: "Missing token" })
-    if (!req.body) return res.status(400).json({ message: "Missing body" })
 
-    const claims = jwt.decode(token, process.env.SECRET || require("./secret.js").SECRET)
+    const claims = jwt.decode(token, process.env.SECRET || require("./secret.js.js").SECRET)
     req.user = claims
-    req.token = `Bearer ${process.env.JWT || require("./secret.js").JWT}`
+    req.token = `Bearer ${process.env.JWT || require("./secret.js.js").JWT}`
     next()
   } catch (error) {
     console.log(error.response ? error.response.data : error)

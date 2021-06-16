@@ -3,7 +3,7 @@ const router = require("./routes")
 const path = require("path")
 const mongoose = require("mongoose")
 const axios = require("axios")
-const { middleWare } = require("./utils/middleWare")
+const { middleWare } = require("./middleWare")
 const port = process.env.PORT || 8000
 require("dotenv").config()
 

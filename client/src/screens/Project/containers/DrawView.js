@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useContext } from 'react'
 import CanvasDraw from 'react-canvas-draw'
 import axios from 'axios'
 import html2canvas from 'html2canvas'
@@ -6,10 +6,12 @@ import Submit from '../components/Submit'
 import LanguageDropDown from '../components/LanguageDropDown'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Loader from '../../../components/Loader/Loader'
+import { UserContext } from '../../../utils/UseUserContext'
 
 function DrawView({ className, setCode, language, setLanguage }) {
-  const [loading, setLoading] = useState(false)
   let canvas = useRef()
+  const [loading, setLoading] = useState(false)
+  const [user,] = useContext(UserContext)
 
   const keyboardListener = ((event) => {
     if (event.ctrlKey && event.key === 'z') {
@@ -44,12 +46,11 @@ function DrawView({ className, setCode, language, setLanguage }) {
 
       try {
         const headers = {
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.J17JYU9weVb9fVBqmhS5JZjEdzgjOAvz-21uuO7Eg4w',
+          'Authorization': `Bearer ${user.token}`,
           'Content-Type': 'application/json'
         }
         // const { data } = await axios.post('/api/recognize', { language, base64Image }, { headers })
-        //todo: remove ^
-        await new Promise(r => setTimeout(r, 5 * 1000))
+        //todo: remove ^, comment this V
         const data = { code: 'console.log("draw")' }
         setCode(prev => (prev + '\n' + data.code).trim())
       } catch (err) {

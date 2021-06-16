@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import FocusLock from 'react-focus-lock'
 import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import LanguageDropDown from '../components/LanguageDropDown'
 import Loader from '../../../components/Loader/Loader'
 import Submit from '../components/Submit'
+import { UserContext } from '../../../utils/UseUserContext'
 
 function CodeView({ className, code, setCode, language, setLanguage, setOutput }) {
   const [recentTypedCode, setRecentTypedCode] = useState(code)
   const [loading, setLoading] = useState(false)
+  const [user,] = useContext(UserContext)
 
   useEffect(() => {
     const updateCode = setTimeout(() => {
@@ -56,13 +58,12 @@ function CodeView({ className, code, setCode, language, setLanguage, setOutput }
     setLoading(true)
     setCode(recentTypedCode)
     const headers = {
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.J17JYU9weVb9fVBqmhS5JZjEdzgjOAvz-21uuO7Eg4w',
+      'Authorization': `Bearer ${user.token}`,
       'Content-Type': 'application/json'
     }
     try {
-      //const { data } = await axios.post('/api/compile', { code: recentTypedCode, language }, { headers })
-      //todo remove this ^
-      await new Promise(r => setTimeout(r, 2 * 1000))
+      // const { data } = await axios.post('/api/compile', { code: recentTypedCode, language }, { headers })
+      //todo remove this ^, comment this v
       const data = { stdout: "3\n", stderr: "", error: null }
       setOutput(data)
     } catch {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import axios from 'axios'
 import Button from './components/Button'
@@ -7,6 +7,7 @@ import CodeView from './containers/CodeView'
 import DrawView from './containers/DrawView'
 import OuputView from './containers/OuputView'
 import SaveProject from './components/SaveProject'
+import { UserContext } from '../../utils/UseUserContext'
 
 function Project() {
   const { id } = useParams()
@@ -15,6 +16,7 @@ function Project() {
   const [output, setOutput] = useState()
   const [language, setLanguage] = useState('javascript')
   const [currentView, setCurrentView] = useState('Camera')
+  const [user,] = useContext(UserContext)
 
   useEffect(() => {
     if (!id || id === 'new') return
@@ -23,7 +25,7 @@ function Project() {
 
   const loadProjectData = async () => {
     try {
-      const { data } = await axios(`/api/projects/${id}`)
+      const { data } = await axios.get(`/api/projects/${id}`, { headers: { Authorization: `Bearer ${user.token}` } })
       setCode({ ...data.code })
       setLanguage({ ...data.language })
     } catch (err) {
