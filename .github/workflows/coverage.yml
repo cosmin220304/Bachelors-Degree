@@ -16,8 +16,7 @@ jobs:
       run: |
         npm install
         CI='' npm test
-        npm run test-coverage
-      working-directory: ./server
+        npm run test-coverage 
       env: 
         TEST_DB_URL: ${{ secrets.TEST_DB_URL }} 
         JWT: ${{ secrets.JWT }}
