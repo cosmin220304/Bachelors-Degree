@@ -111,7 +111,7 @@ describe("users tests", () => {
       "username": "cosmin0123",
       "email": "cosmin"
     }
-    const req = { params: {}, query: { username: /^cos/ }, body: {} }
+    const req = { params: {}, query: { username: "cos" }, body: {} }
 
     //act
     await user.getUsers(req, res)

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import FocusLock from 'react-focus-lock'
 import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import LanguageDropDown from '../components/LanguageDropDown'
+import LanguageDropDown from '../../../components/LanguageDropDown'
 import Loader from '../../../components/Loader/Loader'
 import Submit from '../components/Submit'
 import { UserContext } from '../../../utils/UseUserContext'
@@ -75,12 +75,10 @@ function CodeView({ className, code, setCode, language, setLanguage, setOutput }
   return (
     <div className={className + ' md:w-6/12'}>
       <Loader isVisible={loading} className='absolute inset-center z-10 text-white' />
-      <FocusLock>
-        <code id='edit-text' contentEditable onInput={handleChange} suppressContentEditableWarning
-          className=' whitespace-pre-wrap bg-white p-4 m-2 mt-0 h-full flex flex-col'>
-          {code}
-        </code>
-      </FocusLock>
+      <code id='edit-text' contentEditable onInput={handleChange} suppressContentEditableWarning
+        className=' whitespace-pre-wrap bg-white p-4 m-2 mt-0 h-full flex flex-col'>
+        {code}
+      </code>
 
       <div className='w-full flex p-2 pt-0 pb-0 gap-8 items-center'>
         <LanguageDropDown className='flex-1' language={language} setLanguage={setLanguage} />

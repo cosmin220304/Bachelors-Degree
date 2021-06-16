@@ -12,6 +12,4 @@ router.put("/users/:id", middleWare, user.updateUserById)
 router.delete("/users/:id", middleWare, user.removeUserById)
 router.post("/users/:id", middleWare, user.removeUserById)
 
-router.post("/users/:id/projects", user.createProject)
-
 module.exports = router;

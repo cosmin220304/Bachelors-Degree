@@ -38,7 +38,11 @@ function Login() {
   }, [setUser])
 
   return (
-    <div id='firebaseui-auth-container' className='md: mt-4' />
+    <>
+      <div className='font-bold text-2xl text-center mt-8 mb-2'>Welcome 🎉! </div>
+      <div className='text-center'> Please login before you contnue</div>
+      <div id='firebaseui-auth-container' className='md: mt-4' />
+    </>
   )
 }
 

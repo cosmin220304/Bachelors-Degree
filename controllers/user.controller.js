@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken")
 module.exports.getUsers = async (req, res) => {
   try {
     const filter = req.query
-    let pageSize = 100
+    let pageSize = 20
     let pageNumber = 0
 
     if (filter.pageSize) pageSize = parseInt(filter.pageSize)
@@ -90,31 +90,6 @@ module.exports.removeUserById = async (req, res) => {
 
     await db.user.deleteOne({ uid: id })
     res.sendStatus(204)
-
-  } catch (error) {
-    console.log(error)
-    res.status(500).json({ error })
-  }
-};
-
-module.exports.createProject = async (req, res) => {
-  try {
-    const id = req.params.id
-    if (!req.user.admin && req.user.uid !== id) return res.status(401).json({ error: "you are not the user" })
-
-    const foundUser = await db.user.findOne({ uid: id })
-    if (!foundUser) return res.status(404).json({ error: "user doesn't exist!" })
-
-    req.body.creationDate = new Date()
-    const project = await db.project.create({ ...req.body, owner: foundUser })
-
-    foundUser.projects = [...foundUser.projects, project._id]
-    await db.user.updateOne(
-      { uid: foundUser.uid },
-      { $set: foundUser }
-    )
-
-    res.status(201).json({ project })
 
   } catch (error) {
     console.log(error)

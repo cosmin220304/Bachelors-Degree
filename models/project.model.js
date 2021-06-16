@@ -20,6 +20,12 @@ const project = new Schema(
     owner: {
       type: Schema.Types.ObjectId,
       ref: "user"
+    },
+    authorName: {
+      type: String,
+    },
+    lastModifiedDate: {
+      type: String
     }
   }
 );

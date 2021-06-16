@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { UserContext } from '../../../utils/UseUserContext'
 
-function ProjectCard({ name, language, lastModified, lastAccessed, author, id }) {
+function ProjectCard({ title, language, lastModifiedDate, creationDate, authorName, id }) {
   const [user,] = useContext(UserContext)
   const history = useHistory()
 
@@ -14,16 +14,16 @@ function ProjectCard({ name, language, lastModified, lastAccessed, author, id })
     >
 
       <div className='flex'>
-        <b className='flex-1'> {name} </b>
+        <b className='flex-1 truncate'> {title} </b>
         <b className=''> {language} </b>
       </div>
 
-      <div className='text-xs font-bold'> by {user.username === author ? 'you' : author} </div>
+      <div className='text-xs font-bold'> by {user.username === authorName ? 'you' : authorName} </div>
 
       <div className='flex-1' />
 
-      <div className='text-xs italic'> Last Modified: {lastModified}</div>
-      <div className='text-xs italic'> Last Accessed: {lastAccessed}</div>
+      <div className='text-xs italic'> Last Modified on: {lastModifiedDate}</div>
+      <div className='text-xs italic'> Created on: {creationDate}</div>
 
     </div >
   )

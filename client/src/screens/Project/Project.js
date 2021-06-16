@@ -15,6 +15,7 @@ function Project() {
   const [code, setCode] = useState('')
   const [output, setOutput] = useState()
   const [language, setLanguage] = useState('javascript')
+  const [title, setTitle] = useState('New project')
   const [currentView, setCurrentView] = useState('Camera')
   const [user,] = useContext(UserContext)
 
@@ -25,9 +26,11 @@ function Project() {
 
   const loadProjectData = async () => {
     try {
-      const { data } = await axios.get(`/api/projects/${id}`, { headers: { Authorization: `Bearer ${user.token}` } })
-      setCode({ ...data.code })
-      setLanguage({ ...data.language })
+      const headers = { Authorization: `Bearer ${user.token}` }
+      const { data } = await axios.get(`/api/projects/${id}`, { headers })
+      setCode(data.code)
+      setLanguage(data.language)
+      setTitle(data.title)
     } catch (err) {
       alert('project doesn\'t exist!')
       history.push('/')
@@ -54,7 +57,8 @@ function Project() {
   return (
     <div className='h-full bg-black'>
 
-      <SaveProject className='md:pl-16' />
+      <SaveProject className='md:pl-16' language={language} code={code} proj_title={title} />
+
       <div className='bg-black sm:m-auto md:w-6/12 md:flex items-start md:pl-16 md:w-full md:h-full'>
 
         <CurrentView />

@@ -1,7 +1,7 @@
 import React, { useRef, useCallback, useState, useContext } from 'react'
 import Webcam from 'react-webcam'
 import Loader from '../../../components/Loader/Loader'
-import LanguageDropDown from '../components/LanguageDropDown'
+import LanguageDropDown from '../../../components/LanguageDropDown'
 import Submit from '../components/Submit'
 import { UserContext } from '../../../utils/UseUserContext'
 
