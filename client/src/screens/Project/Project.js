@@ -31,14 +31,16 @@ function Project() {
       setCode(data.code)
       setLanguage(data.language)
       setTitle(data.title)
+
     } catch (err) {
       let projects = localStorage.getItem('projects')
+
       if (!projects) {
         alert('project doesn\'t exist!')
         history.push('/')
+
       } else {
-        projects = JSON.parse(projects)
-        const project = projects.find(p => p.offlineId === id)
+        const project = JSON.parse(projects).find(p => p.offlineId === id)
         setCode(project.code)
         setLanguage(project.language)
         setTitle(project.title)

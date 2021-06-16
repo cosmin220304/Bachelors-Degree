@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Pagination from './components/Pagination'
 import CreateProjectButton from './components/CreateProjectButton'
 import { v4 as uuidv4 } from 'uuid'
 import NoProjectsCard from './components/NoProjectsCard'
@@ -17,8 +17,12 @@ function Home({ isUserProfile }) {
   const [offlineProjects, setOfflineProjects] = useState()
 
   useEffect(() => {
+    reset()
+  }, [isUserProfile])
+
+  useEffect(() => {
     getAllProjects()
-  }, [isUserProfile, pageNumber, language, searchName])
+  }, [pageNumber, language, searchName])
 
   const getAllProjects = async () => {
     try {
@@ -33,7 +37,7 @@ function Home({ isUserProfile }) {
 
       const { data } = await axios.get(url, { headers })
       const offlineData = localStorage.getItem('projects') ? JSON.parse(localStorage.getItem('projects')) : []
-      setProjects([...offlineData, ...data])
+      setProjects(data)
       setOfflineProjects(offlineData)
 
     } catch (err) {
@@ -44,8 +48,26 @@ function Home({ isUserProfile }) {
 
   useEffect(() => {
     if (!offlineProjects) return
-    console.log(offlineProjects)
+    localStorage.removeItem('projects')
+    offlineProjects.map(p => addOfflineProject(p))
   }, [offlineProjects])
+
+  const addOfflineProject = async (project) => {
+    try {
+      const headers = {
+        'Authorization': `Bearer ${user.token}`,
+        'Content-Type': 'application/json'
+      }
+      if (project.method === 'post') {
+        await axios.post(`/api/users/${user.uid}/projects`, { ...project }, { headers })
+      } else {
+        await axios.put(`/api/users/${user.uid}/projects/${project._id}`, { ...project }, { headers })
+      }
+
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   const changeHandler = (e) => {
     setSearchName(e.target.value)
@@ -76,17 +98,7 @@ function Home({ isUserProfile }) {
         </div>
       </div>
 
-      <div className='text-green-700 flex flex-wrap justify-center items-center gap-4 m-2 mb-8 '>
-        <div onClick={prevPage} className='bg-green-100 text-center rounded-xl p-2 pr-16 shadow cursor-pointer'>
-          <FontAwesomeIcon icon='caret-left' size='2x' />
-        </div>
-        <div className='text-black text-lg'>
-          page {pageNumber + 1}
-        </div>
-        <div onClick={nextPage} className='bg-green-100 text-center rounded-xl p-2 pl-16 shadow cursor-pointer'>
-          <FontAwesomeIcon icon='caret-right' size='2x' />
-        </div>
-      </div>
+      <Pagination className='m-2 mb-8' prevPage={prevPage} nextPage={nextPage} pageNumber={pageNumber} />
 
       <div className='pl-8 pr-8 flex flex-col flex-wrap gap-8'>
         {projects.map(p => (
@@ -101,6 +113,7 @@ function Home({ isUserProfile }) {
         ))}
       </div>
 
+      <Pagination className='m-2 mt-8' prevPage={prevPage} nextPage={nextPage} pageNumber={pageNumber} />
 
       {projects.length === 0 && <NoProjectsCard className='grid place-items-center m-auto md:w-6/12' />}
 
