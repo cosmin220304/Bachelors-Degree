@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { useCookies } from "react-cookie"
-
 const UserContext = React.createContext()
 
 const UserContextWrapper = ({ children }) => {
-  const [cookies, setCookie] = useCookies(["user"]);
-  const [user, setUser] = useState(cookies.user);
+
+  const [user, setUser] = useState(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null)
 
   useEffect(() => {
-    setCookie("user", user);
+    if (!user) return
+    localStorage.setItem('user', JSON.stringify(user))
   }, [user]);
 
   return (

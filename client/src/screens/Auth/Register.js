@@ -37,7 +37,7 @@ function Register() {
           username: values.username,
           email: values.email,
         })
-        setUser({ ...data.user })
+        setUser({ ...data })
       } catch (err) {
         alert('username or email already taken!')
         setError({ username: true, email: true })

@@ -156,7 +156,7 @@ describe("users tests", () => {
 
     //act
     await user.createUser(req, res)
-    req.params.id = data.user.uid
+    req.params.id = data.uid
     status = 200
     data = null
     await user.removeUserById(req, res)
