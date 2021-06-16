@@ -64,7 +64,7 @@ module.exports.updateProjectById = async (req, res) => {
     const foundProject = await db.project.findOne({ _id: projectId })
     if (!foundProject) return res.status(404).json({ error: "project not found" })
 
-    if (!req.user.admin && foundProject.owner !== foundUser._id) return res.status(401).json({ error: "you are not the owner" })
+    if (!req.user.admin && !foundProject.owner.equals(foundUser._id)) return res.status(401).json({ error: "you are not the owner" })
 
     req.body.lastModifiedDate = new Date().toDateString()
     await db.project.updateOne(
@@ -106,7 +106,7 @@ module.exports.removeProjectById = async (req, res) => {
     const foundProject = await db.project.findOne({ _id: projectId })
     if (!foundProject) return res.status(404).json({ error: "project not found" })
 
-    if (!req.user.admin && foundProject.owner !== foundUser._id) return res.status(401).json({ error: "you are not the owner" })
+    if (!req.user.admin && !foundProject.owner.equals(foundUser._id)) return res.status(401).json({ error: "you are not the owner" })
 
     await db.project.deleteOne({ _id: projectId })
     res.sendStatus(204)
