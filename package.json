@@ -9,6 +9,7 @@
     "path": "^0.12.7"
   },
   "scripts": {
+    "heroku-postbuild": "cd client && npm install && npm run build",
     "test": "jest ",
     "test-coverage": "npx jest --coverage --silent > README.md",
     "start": "node server.js",
