@@ -41,7 +41,7 @@ mongoose
   .connect(db_url, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     const app = express()
-    app.use(express.static(path.join(__dirname, "build")))
+    app.use(express.static(path.join(__dirname, "client/build")))
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
 
@@ -107,7 +107,7 @@ mongoose
 
     app.get("/api/languages", (req, res) => res.json({ languages: acceptedLangauges }))
 
-    app.get("**", (req, res) => res.sendFile("index.html"))
+    app.get("*", (req, res) => res.sendFile(path.join(__dirname + '/client/build/index.html')))
 
     app.listen(port, () => console.log(`listening on ${port}`))
   })
