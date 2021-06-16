@@ -1,1 +1,1 @@
-web: npm start --prefix server -optimize_for_size --max_old_space_size=2048
+web: npm start -optimize_for_size --max_old_space_size=2048
