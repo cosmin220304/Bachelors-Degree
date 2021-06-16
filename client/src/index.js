@@ -1,9 +1,9 @@
-import React from "react"
-import ReactDOM from "react-dom"
-import { BrowserRouter } from "react-router-dom"
-import registerServiceWorker from "./registerServiceWorker"
-import App from "./App"
-import { UserContextWrapper } from "./utils/UseUserContext"
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { BrowserRouter } from 'react-router-dom'
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import { UserContextWrapper } from './utils/UseUserContext'
+import App from './App'
 import './utils/InitFontAwesomeIcons'
 import './public/index.css'
 
@@ -13,7 +13,7 @@ ReactDOM.render(
             <App />
         </BrowserRouter>
     </UserContextWrapper>,
-    document.getElementById("root"))
+    document.getElementById('root'))
 
-registerServiceWorker()
 
+serviceWorkerRegistration.register()
