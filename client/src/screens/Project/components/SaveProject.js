@@ -38,7 +38,8 @@ function SaveProject({ className, language, code, proj_title }) {
     } catch (err) {
       const { error: errorMsg } = err.response.data
       if (errorMsg === 'you are not the owner') {
-        createProject()
+        //createProject()
+        console.log("creating", { language, code, title, author: user._id }, user)
       }
     }
   }

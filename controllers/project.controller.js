@@ -41,8 +41,6 @@ module.exports.getProjects = async (req, res) => {
     delete filter.pageSize
     delete filter.pageNumber
 
-    console.log(filter)
-
     projects = await db.project.find(filter, {}, { skip: pageSize * pageNumber, limit: pageSize })
     if (!projects || projects.length == 0) return res.status(404).json({ error: "no project found!" })
 
