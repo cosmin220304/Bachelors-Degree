@@ -14,6 +14,7 @@ function Home({ isUserProfile }) {
   const [language, setLanguage] = useState()
   const [searchName, setSearchName] = useState()
   const [pageNumber, setPageNumber] = useState(0)
+  const [offlineProjects, setOfflineProjects] = useState()
 
   useEffect(() => {
     getAllProjects()
@@ -31,11 +32,20 @@ function Home({ isUserProfile }) {
       if (language) url += `&langnuage=${language}`
 
       const { data } = await axios.get(url, { headers })
-      setProjects(data)
-    } catch {
-      setProjects([])
+      const offlineData = localStorage.getItem('projects') ? JSON.parse(localStorage.getItem('projects')) : []
+      setProjects([...offlineData, ...data])
+      setOfflineProjects(offlineData)
+
+    } catch (err) {
+      const offlineData = localStorage.getItem('projects') ? JSON.parse(localStorage.getItem('projects')) : []
+      setProjects(offlineData)
     }
   }
+
+  useEffect(() => {
+    if (!offlineProjects) return
+    console.log(offlineProjects)
+  }, [offlineProjects])
 
   const changeHandler = (e) => {
     setSearchName(e.target.value)
@@ -86,7 +96,7 @@ function Home({ isUserProfile }) {
             creationDate={p.creationDate}
             lastModifiedDate={p.lastModifiedDate}
             authorName={p.authorName}
-            id={p._id}
+            id={p._id || p.offlineId}
           />
         ))}
       </div>

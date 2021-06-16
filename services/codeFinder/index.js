@@ -36,7 +36,7 @@ const getProbability = (input, language) => {
         .algo("PetiteProgrammer/ProgrammingLanguageIdentification/0.1.3")
         .pipe(input)
         .then((response) => resolve(
-          response.result.filter(r => r[0] === language)[1])
+          response.result.find(r => r[0] === language)[1])
         )
     } catch (err) {
       reject(err)

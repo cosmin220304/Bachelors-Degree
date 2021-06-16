@@ -17,7 +17,7 @@ function ProjectCard({ title, language, lastModifiedDate, creationDate, authorNa
       </div>
 
       {
-        user.username === authorName
+        user.username === authorName || !authorName
           ? <div className='text-xs text-green-700 font-bold'>  by you </div>
           : <div className='text-xs font-bold'>  by authorName  </div>
       }

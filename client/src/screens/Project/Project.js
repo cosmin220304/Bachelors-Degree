@@ -32,8 +32,17 @@ function Project() {
       setLanguage(data.language)
       setTitle(data.title)
     } catch (err) {
-      alert('project doesn\'t exist!')
-      history.push('/')
+      let projects = localStorage.getItem('projects')
+      if (!projects) {
+        alert('project doesn\'t exist!')
+        history.push('/')
+      } else {
+        projects = JSON.parse(projects)
+        const project = projects.find(p => p.offlineId === id)
+        setCode(project.code)
+        setLanguage(project.language)
+        setTitle(project.title)
+      }
     }
   }
 

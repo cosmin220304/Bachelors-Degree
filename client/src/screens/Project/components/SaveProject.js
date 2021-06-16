@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
 import { useHistory, useParams } from 'react-router-dom'
 import { UserContext } from '../../../utils/UseUserContext'
+import { v4 as uuidv4 } from 'uuid'
 
 function SaveProject({ className, language, code, proj_title }) {
   const { id } = useParams()
@@ -15,14 +16,16 @@ function SaveProject({ className, language, code, proj_title }) {
   }, [proj_title])
 
   const createProject = async () => {
-    const headers = {
-      'Authorization': `Bearer ${user.token}`,
-      'Content-Type': 'application/json'
+    try {
+      const headers = {
+        'Authorization': `Bearer ${user.token}`,
+        'Content-Type': 'application/json'
+      }
+      const { data } = await axios.post(`/api/users/${user.uid}/projects`, { language, code, title, author: user._id }, { headers })
+      history.push(`/project/${data._id}`)
+    } catch (err) {
+      saveOffline('post', uuidv4())
     }
-    const { data } = await axios.post(`/api/users/${user.uid}/projects`,
-      { language, code, title, author: user._id },
-      { headers })
-    history.push(`/project/${data._id}`)
   }
 
   const updateProject = async () => {
@@ -31,17 +34,40 @@ function SaveProject({ className, language, code, proj_title }) {
         'Authorization': `Bearer ${user.token}`,
         'Content-Type': 'application/json'
       }
-      await axios.put(`/api/users/${user.uid}/projects/${id}`,
-        { language, code, title, author: user._id },
-        { headers })
+      await axios.put(`/api/users/${user.uid}/projects/${id}`, { language, code, title, author: user._id }, { headers })
 
     } catch (err) {
-      const { error: errorMsg } = err.response.data
-      if (errorMsg === 'you are not the owner') {
-        alert('created a copy of project')
-        createProject()
+      if (!err.response) {
+        saveOffline('put', id)
+      } else {
+        const { error: errorMsg } = err.response.data
+        if (errorMsg === 'you are not the owner') {
+          alert('created a copy of project')
+          createProject()
+        }
       }
     }
+  }
+
+  const saveOffline = (method, offlineId) => {
+    console.log(method, offlineId)
+    let projects = localStorage.getItem('projects')
+    const newProject = { language, code, title, author: user._id, method, offlineId }
+
+    if (projects) {
+      projects = JSON.parse(projects)
+      const oldProject = projects.find(p => p.offlineId === offlineId)
+      if (!oldProject) {
+        projects.push(newProject)
+      } else {
+        projects = projects.map(p => p.offlineId === offlineId ? newProject : p)
+      }
+    } else {
+      projects = [newProject]
+    }
+
+    alert('you are offline, saved it locally')
+    localStorage.setItem('projects', JSON.stringify(projects))
   }
 
   const save = () => {
