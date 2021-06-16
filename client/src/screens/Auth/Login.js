@@ -16,17 +16,12 @@ function Login() {
 
     const uiConfig = {
       callbacks: {
-        signInSuccessWithAuthResult: async (authResult) => {
+        signInSuccessWithAuthResult: (authResult) => {
           const user = authResult.user
-          try {
-            const { data } = await axios.get(`/api/users/${user.uid}`)
-            setUser({ ...data.user })
-          } catch (err) {
-            setUser({ phoneNumber: user.phoneNumber, uid: user.uid })
-          }
-          finally {
-            return false
-          }
+          axios.get(`/api/users/${user.uid}`)
+		.then(({ data }) => setUser({ ...data.user }))
+		.catch(err => setUser({ phoneNumber: user.phoneNumber, uid: user.uid })) 
+          return false 
         }
       },
       signInOptions: [
