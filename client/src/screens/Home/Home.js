@@ -7,8 +7,10 @@ import ProjectCard from './components/ProjectCard'
 import { UserContext } from '../../utils/UseUserContext'
 import LanguageDropDown from '../../components/LanguageDropDown'
 import axios from 'axios'
+import { useLocation } from 'react-router-dom'
 
 function Home({ isUserProfile }) {
+  const location = useLocation()
   const [user,] = useContext(UserContext)
   const [projects, setProjects] = useState([])
   const [language, setLanguage] = useState()
@@ -18,7 +20,8 @@ function Home({ isUserProfile }) {
 
   useEffect(() => {
     reset()
-  }, [isUserProfile])
+    getAllProjects()
+  }, [isUserProfile, location])
 
   useEffect(() => {
     getAllProjects()
@@ -113,9 +116,10 @@ function Home({ isUserProfile }) {
         ))}
       </div>
 
+      {projects.length === 0 && <NoProjectsCard className='grid place-items-center m-auto md:w-6/12' />}
+
       <Pagination className='m-2 mt-8' prevPage={prevPage} nextPage={nextPage} pageNumber={pageNumber} />
 
-      {projects.length === 0 && <NoProjectsCard className='grid place-items-center m-auto md:w-6/12' />}
 
       <div className='h-screen' />
       <div className='sticky bottom-4 right-4 flex flex-col'>
