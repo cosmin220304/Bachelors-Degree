@@ -32,14 +32,15 @@ const middleWare = (req, res, next) => {
 const getProbability = (input, language) => {
   return new Promise((resolve, reject) => {
     try {
-      algorithmia.client("simhyPYvZBQc/VqJmRxmrJhkALx1")//todo
+      algorithmia.client(process.env.ALGORITHMIA_KEY || require("./secret.js").ALGORITHMIA_KEY)
         .algo("PetiteProgrammer/ProgrammingLanguageIdentification/0.1.3")
         .pipe(input)
         .then((response) => resolve(
-          response.result.find(r => r[0] === language)[1])
-        )
+          response.result.find(r => r[0] === language)[1]
+        ))
     } catch (err) {
-      reject(err)
+      console.log(err)
+      reject(0)
     }
   })
 }
