@@ -1,0 +1,3 @@
+This is not my trained model!!
+It is taken from: https://tessdata.projectnaptha.com/ with MIT license
+Normally this would be loaded via CDN, but the folder is saved locally so the OCR could work offline

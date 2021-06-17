@@ -62,12 +62,10 @@ function CodeView({ className, code, setCode, language, setLanguage, setOutput }
       'Content-Type': 'application/json'
     }
     try {
-      // const { data } = await axios.post('/api/compile', { code: recentTypedCode, language }, { headers })
-      //todo remove this ^, comment this v
-      const data = { stdout: "3\n", stderr: "", error: null }
+      const { data } = await axios.post('/api/compile', { code: recentTypedCode, language }, { headers })
       setOutput(data)
     } catch {
-      alert('request failed, try again in 2 minutes!')
+      alert('request failed, try again later!')
     }
     setLoading(false)
   }

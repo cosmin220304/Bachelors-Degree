@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from 'react'
 import CanvasDraw from 'react-canvas-draw'
 import axios from 'axios'
+import Tesseract from 'tesseract.js'
 import html2canvas from 'html2canvas'
 import Submit from '../components/Submit'
 import LanguageDropDown from '../../../components/LanguageDropDown'
@@ -49,17 +50,37 @@ function DrawView({ className, setCode, language, setLanguage }) {
           'Authorization': `Bearer ${user.token}`,
           'Content-Type': 'application/json'
         }
-        // const { data } = await axios.post('/api/recognize', { language, base64Image }, { headers })
-        //todo: remove ^, comment this V
-        const data = { code: 'console.log("draw")' }
+        const { data } = await axios.post('/api/recognize', { language, base64Image }, { headers })
         setCode(prev => (prev + '\n' + data.code).trim())
+        setLoading(false)
+
       } catch (err) {
         console.log(err)
-        alert('request failed, try again in 2 minutes!')
+        alert('request to server failed, will try to use a local solution')
+        recognizeOffline(base64Image)
       }
-
-      setLoading(false)
     })
+  }
+
+  const recognizeOffline = async (base64Image) => {
+    try {
+      const worker = Tesseract.createWorker({
+        langPath: '../../../utils/tesseract/lang',
+      });
+      await worker.load();
+      await worker.loadLanguage('eng')
+      await worker.initialize('eng')
+      const { data: { text } } = await worker.recognize(base64Image);
+      await worker.terminate();
+      setCode(prev => (prev + '\n' + text.toLowerCase()).trim())
+
+    } catch (err) {
+      console.log(err)
+      alert('some error occured, please try again!')
+
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -88,7 +109,7 @@ function DrawView({ className, setCode, language, setLanguage }) {
 
       <div className='w-full mt-2 flex p-2 pt-0 pb-0 gap-8 items-center'>
         <LanguageDropDown className='flex-1' language={language} setLanguage={setLanguage} />
-        <div className='text-white cursor-pointer hover:text-gray-400' onClick={clear}>
+        <div className='text-white cursor-pointer hover:text-gray-400' onClick={undo}>
           <FontAwesomeIcon icon='undo' size='2x' />
         </div>
         <div className='text-white cursor-pointer pr-2 hover:text-gray-400' onClick={clear}>
