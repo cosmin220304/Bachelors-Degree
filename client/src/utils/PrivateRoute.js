@@ -8,7 +8,6 @@ import { UserContext } from './UseUserContext'
 export default function PrivateRoute({ component: Component, ...rest }) {
   const location = useLocation()
   const [user,] = useContext(UserContext)
-  console.log("auth", user)
 
   return (
     <Route
