@@ -8,6 +8,7 @@ import LanguageDropDown from '../../../components/LanguageDropDown'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Loader from '../../../components/Loader/Loader'
 import { UserContext } from '../../../utils/UseUserContext'
+import DragPoint from '../components/DragPoint'
 
 function DrawView({ className, setCode, language, setLanguage }) {
   let canvas = useRef()
@@ -84,41 +85,45 @@ function DrawView({ className, setCode, language, setLanguage }) {
   }
 
   return (
-    <div className={className + ' relative md:w-6/12'}>
-      <Loader isVisible={loading} className='absolute inset-center z-50' />
+    <>
+      <DragPoint className='absolute right-0 top-2/4 transform translate-y z-50 md:hidden' />
 
-      <div className='h-96'>
-        <CanvasDraw
-          style={{ border: '2px solid black', backgroundColor: 'white' }}
-          ref={canvasDraw => (canvas = canvasDraw)}
-          onChange={null}
-          brushRadius={2}
-          brushColor={'#444'}
-          lazyRadius={0}
-          hideGrid={true}
-          canvasWidth={'100%'}
-          canvasHeight={'100%'}
-          disabled={false}
-          imgSrc={''}
-          saveData={null}
-          immediateLoading={true}
-          hideInterface={true}
-          className='h-screen'
-        />
-      </div>
+      <div className={className + ' relative md:w-6/12'}>
+        <Loader isVisible={loading} className='absolute inset-center z-50' />
 
-      <div className='w-full mt-2 flex p-2 pt-0 pb-0 gap-8 items-center'>
-        <LanguageDropDown className='flex-1' language={language} setLanguage={setLanguage} />
-        <div className='text-white cursor-pointer hover:text-gray-400' onClick={undo}>
-          <FontAwesomeIcon icon='undo' size='2x' />
+        <div className='h-96'>
+          <CanvasDraw
+            style={{ border: '2px solid black', backgroundColor: 'white' }}
+            ref={canvasDraw => (canvas = canvasDraw)}
+            onChange={null}
+            brushRadius={2}
+            brushColor={'#444'}
+            lazyRadius={0}
+            hideGrid={true}
+            canvasWidth={'100%'}
+            canvasHeight={'100%'}
+            disabled={false}
+            imgSrc={''}
+            saveData={null}
+            immediateLoading={true}
+            hideInterface={true}
+            className='h-screen'
+          />
         </div>
-        <div className='text-white cursor-pointer pr-2 hover:text-gray-400' onClick={clear}>
-          <FontAwesomeIcon icon='trash-alt' size='2x' />
-        </div>
-      </div>
 
-      <Submit onClick={submit} text='Convert into text!' />
-    </div>
+        <div className='w-full mt-2 flex p-2 pt-0 pb-0 gap-8 items-center'>
+          <LanguageDropDown className='flex-1' language={language} setLanguage={setLanguage} />
+          <div className='text-white cursor-pointer hover:text-gray-400' onClick={undo}>
+            <FontAwesomeIcon icon='undo' size='2x' />
+          </div>
+          <div className='text-white cursor-pointer pr-2 hover:text-gray-400' onClick={clear}>
+            <FontAwesomeIcon icon='trash-alt' size='2x' />
+          </div>
+        </div>
+
+        <Submit onClick={submit} text='Convert into text!' />
+      </div>
+    </>
   )
 }
 
