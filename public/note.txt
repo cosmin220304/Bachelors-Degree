@@ -1,0 +1,6 @@
+These are not my javascript files!
+
+Normally imported with cdn, these are saved locally for cors reasons and are required to be used by Tesseract offline.
+Files taken from:
+https://unpkg.com/tesseract.js@v2.0.0/dist/worker.min.js
+https://unpkg.com/tesseract.js-core@v2.0.0/tesseract-core.wasm.js

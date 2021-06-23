@@ -19,6 +19,12 @@ function Home({ isUserProfile }) {
   const [offlineProjects, setOfflineProjects] = useState()
 
   useEffect(() => {
+    axios.get('/worker.min.js')
+    axios.get('/tesseract/eng.traineddata.gz')
+    axios.get('/tesseract-core.wasm.js')
+  }, [])
+
+  useEffect(() => {
     reset()
     getAllProjects()
   }, [isUserProfile, location])

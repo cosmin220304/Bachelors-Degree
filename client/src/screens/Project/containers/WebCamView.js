@@ -49,7 +49,9 @@ function WebCamView({ className, setCode, language, setLanguage }) {
   const recognizeOffline = async (base64Image) => {
     try {
       const worker = Tesseract.createWorker({
-        langPath: '../../../utils/tesseract/lang',
+        workerPath: '/worker.min.js',
+        langPath: '/tesseract',
+        corePath: '/tesseract-core.wasm.js',
       });
       await worker.load();
       await worker.loadLanguage('eng')
