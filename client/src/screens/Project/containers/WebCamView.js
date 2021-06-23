@@ -19,7 +19,7 @@ function WebCamView({ className, setCode, language, setLanguage }) {
   const [user,] = useContext(UserContext)
 
   const takePhoto = useCallback(() => {
-    if (loading) {
+    if (loading === true) {
       alert('Wait for task to finish loading!')
       return
     }

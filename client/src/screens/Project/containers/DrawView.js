@@ -14,6 +14,7 @@ function DrawView({ className, setCode, language, setLanguage }) {
   let canvas = useRef()
   const [loading, setLoading] = useState(false)
   const [user,] = useContext(UserContext)
+  const [brushRadius, setBrushRadius] = useState(2)
 
   const keyboardListener = ((event) => {
     if (event.ctrlKey && event.key === 'z') {
@@ -37,7 +38,7 @@ function DrawView({ className, setCode, language, setLanguage }) {
   }
 
   const submit = () => {
-    if (loading) {
+    if (loading === true) {
       alert('Wait for task to finish loading!')
       return
     }
@@ -98,8 +99,8 @@ function DrawView({ className, setCode, language, setLanguage }) {
             style={{ border: '2px solid black', backgroundColor: 'white' }}
             ref={canvasDraw => (canvas = canvasDraw)}
             onChange={null}
-            brushRadius={2}
-            brushColor={'#444'}
+            brushRadius={brushRadius}
+            brushColor={'black'}
             lazyRadius={0}
             hideGrid={true}
             canvasWidth={'100%'}
@@ -111,6 +112,12 @@ function DrawView({ className, setCode, language, setLanguage }) {
             hideInterface={true}
             className='h-screen'
           />
+        </div>
+
+
+        <div className='flex justify-around p-1'>
+          <button className='text-white focus-within:outline-none rounded' onClick={() => { setBrushRadius(prev => prev + 0.5) }}> <FontAwesomeIcon icon='plus' size='2x' /></button>
+          <button className='text-white focus-within:outline-none rounded' onClick={() => { setBrushRadius(prev => Math.max(1, prev - 0.5)) }}> <FontAwesomeIcon icon='minus' size='2x' /></button>
         </div>
 
         <div className='w-full mt-2 flex p-2 pt-0 pb-0 gap-8 items-center'>
